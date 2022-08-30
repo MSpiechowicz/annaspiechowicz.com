@@ -1,2 +1,2 @@
 # personal-website-react
-Anna Spiechowicz personal website
+Personal Website created with Vite and React version 18
