@@ -2,7 +2,21 @@
   width: fit-content;
 
   p {
-    font-size: 32px;
-    max-width: 35ch;
+    font-size: 22px;
+    max-width: 25ch;
+  }
+
+  @media screen and (min-width: 769px) {
+    p {
+      font-size: 32px;
+      max-width: 35ch;
+    }
+  }
+
+  @media screen and (orientation: landscape) {
+    p {
+      font-size: 28px;
+      max-width: 35ch;
+    }
   }
 }
