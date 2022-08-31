@@ -1,19 +1,20 @@
 .app__experience {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
   gap: 1rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
 
   &__item {
     h3 {
-      font-size: 75px;
+      font-size: 30px;
       margin: 0;
     }
 
     p {
       margin: 0;
-      font-size: 25px;
-      max-width: 10ch;
+      font-size: 10px;
+      max-width: 15ch;
     }
   }
 
@@ -30,20 +31,38 @@
   }
 
   @media screen and (min-width: 540px) {
-    gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
-    width: fit-content;
+    &__item {
+      h3 {
+        font-size: 35px;
+      }
+
+      p {
+        font-size: 12px;
+      }
+    }
   }
 
-  @media screen and (min-width: 768px) {
-    gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
-    width: fit-content;
+  @media screen and (min-width: 990px) {
+    &__item {
+      h3 {
+        font-size: 40px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
   }
 
-  @media screen and (orientation: landscape) {
-    gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
-    width: fit-content;
+  @media screen and (min-width: 1200px) {
+    &__item {
+      h3 {
+        font-size: 45px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
   }
 }
