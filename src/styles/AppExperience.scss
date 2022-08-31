@@ -1,0 +1,31 @@
+.app__experience {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  margin-top: 6rem;
+
+  &__item {
+    h3 {
+      font-size: 75px;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 25px;
+      max-width: 10ch;
+    }
+  }
+
+  &__item--blue {
+    color: var(--basic-blue-color);
+  }
+
+  &__item--yellow {
+    color: var(--basic-yellow-color);
+  }
+
+  &__item--red {
+    color: var(--basic-red-color);
+  }
+}
