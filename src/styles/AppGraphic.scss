@@ -4,17 +4,15 @@
   width: fit-content;
 
   img {
-    width: 312px;
-  }
-
-  @media screen and (min-width: 672px) {
-    img {
-      width: 496px;
-    }
+    width: 250px;
   }
 
   @media screen and (min-width: 768px) {
     padding-left: 4rem;
+
+    img {
+      width: 350px;
+    }
   }
 
   @media screen and (min-width: 990px) {
@@ -22,13 +20,13 @@
     padding-right: 4rem;
 
     img {
-      width: 512px;
+      width: 450px;
     }
   }
 
-  @media screen and (min-width: 1296px) {
+  @media screen and (min-width: 1200px) {
     img {
-      width: 820px;
+      width: 750px;
     }
   }
 }
