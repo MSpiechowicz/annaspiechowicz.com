@@ -1,0 +1,24 @@
+.app__title {
+  width: fit-content;
+
+  h1 {
+    font-size: 75px;
+    margin: 0;
+  }
+
+  h1:nth-child(2) {
+    margin-top: -1rem;
+  }
+
+  h2 {
+    font-size: 55px;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 769px) {
+    h1 {
+      font-size: 85px;
+    }
+  }
+}

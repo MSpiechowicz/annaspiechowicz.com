@@ -1,0 +1,11 @@
+.app__container {
+  margin-top: 2rem;
+  margin-left: 2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 769px) {
+    margin-left: 6rem;
+  }
+}
