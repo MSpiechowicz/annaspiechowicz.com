@@ -1,5 +1,17 @@
 .app__book {
   position: absolute;
-  left: 3rem;
+  left: 1rem;
   top: 1rem;
+
+  img {
+    width: 450px;
+  }
+
+  @media screen and (min-width: 769px) {
+    left: 3rem;
+
+    img {
+      width: 561px;
+    }
+  }
 }
