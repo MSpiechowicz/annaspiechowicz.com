@@ -1,0 +1,10 @@
+.app__contact {
+  width: fit-content;
+  height: auto;
+
+  &__items {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
