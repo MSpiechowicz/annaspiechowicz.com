@@ -16,7 +16,7 @@ function AppExperience() {
       />
       <AppExperienceItem
         title="4+"
-        description="Known Languages"
+        description="Used Languages"
         color="red"
       />
     </div>
