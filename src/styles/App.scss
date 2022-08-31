@@ -3,12 +3,19 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, 1fr);
   grid-gap: 2rem;
   position: relative;
   padding: 2rem;
   align-items: center;
 
   @media screen and (min-width: 990px) {
+    grid-gap: 1rem;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+  }
+
+  @media screen and (min-width: 1200px) {
+    justify-items: center;
   }
 }
