@@ -1,15 +1,39 @@
 .app__graphic {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   margin-top: 3rem;
+  margin-left: 2rem;
 
   img {
-    width: 512px;
+    width: 312px;
   }
 
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 672px) {
+    margin-left: 6rem;
+
+    img {
+      width: 512px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    margin-left: 0;
+    overflow: hidden;
+
+    img {
+      width: 568px;
+      overflow: hidden;
+    }
+  }
+
+  @media screen and (min-width: 1296px) {
+    margin-left: 0;
+    margin-right: 4rem;
+    overflow: hidden;
+
     img {
       width: 900px;
+      overflow: hidden;
     }
   }
 }

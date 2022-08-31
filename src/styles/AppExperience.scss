@@ -1,7 +1,7 @@
 .app__experience {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-top: 3rem;
 
   &__item {
@@ -29,8 +29,21 @@
     color: var(--basic-red-color);
   }
 
-  @media screen and (min-width: 769px) {
-    gap: 3rem;
-    margin-top: 6rem;
+  @media screen and (min-width: 540px) {
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
+  }
+
+  @media screen and (min-width: 768px) {
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
+  }
+
+  @media screen and (orientation: landscape) {
+    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
   }
 }
