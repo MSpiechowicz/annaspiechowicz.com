@@ -1,6 +1,7 @@
+import React from "react";
 import BusinessWoman from "../assets/business-woman.svg";
 
-function Graphic() {
+function AppGraphic() {
   return (
     <div className="app__graphic">
       <img src={BusinessWoman} alt="business woman" />
@@ -8,4 +9,4 @@ function Graphic() {
   );
 }
 
-export default Graphic;
+export default AppGraphic;

@@ -1,17 +1,27 @@
-import Header from "./Header";
-import Contact from "./Contact";
-import Graphic from "./Graphic";
-import Footer from "./Footer";
-import Background from "./Background";
+import React from "react";
+import AppTitle from "./AppTitle";
+import AppMotto from "./AppMotto";
+import AppContainer from "./AppContainer";
+import AppContact from "./AppContact";
+import AppExperience from "./AppExperience";
+import AppGraphic from "./AppGraphic";
+import AppBook from "./AppBook";
 
 function App() {
   return (
     <div className="app">
-      <Background />
-      <Header />
-      <Contact />
-      <Graphic />
-      <Footer />
+      <AppBook />
+      <AppContainer
+        items={
+          <>
+            <AppTitle />
+            <AppMotto />
+            <AppContact />
+            <AppExperience />
+          </>
+        }
+      />
+      <AppGraphic />
     </div>
   );
 }
