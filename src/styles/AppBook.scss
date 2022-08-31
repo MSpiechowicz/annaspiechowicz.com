@@ -1,26 +1,25 @@
 .app__book {
   position: absolute;
-  left: 0;
-  top: 1rem;
 
   img {
-    width: 320px;
+    width: 250px;
   }
 
   @media screen and (min-width: 768px) {
-    left: 2rem;
-
     img {
-      width: 440px;
+      width: 280px;
     }
   }
 
-  @media screen and (min-width: 1296px) {
-    left: 3rem;
-    top: 3rem;
-
+  @media screen and (min-width: 990px) {
     img {
-      width: 561px;
+      width: 320px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    img {
+      width: 360px;
     }
   }
 }
