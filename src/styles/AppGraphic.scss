@@ -2,37 +2,35 @@
   display: flex;
   justify-content: left;
   margin-top: 3rem;
-  margin-left: 2rem;
+  width: fit-content;
 
   img {
     width: 312px;
+    margin-bottom: 3rem;
   }
 
   @media screen and (min-width: 672px) {
-    margin-left: 6rem;
-
     img {
-      width: 512px;
+      width: 496px;
     }
   }
 
   @media screen and (min-width: 990px) {
-    margin-left: 0;
     overflow: hidden;
+    margin-top: 0;
 
     img {
-      width: 568px;
+      width: 512px;
       overflow: hidden;
     }
   }
 
   @media screen and (min-width: 1296px) {
-    margin-left: 0;
-    margin-right: 4rem;
     overflow: hidden;
+    margin-top: 0;
 
     img {
-      width: 900px;
+      width: 820px;
       overflow: hidden;
     }
   }
