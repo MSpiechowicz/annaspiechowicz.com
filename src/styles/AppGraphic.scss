@@ -1,37 +1,35 @@
 .app__graphic {
   display: flex;
   justify-content: left;
-  margin-top: 3rem;
+  align-items: flex-start;
   width: fit-content;
+  height: 100%;
 
   img {
-    width: 312px;
-    margin-bottom: 3rem;
+    width: 250px;
   }
 
-  @media screen and (min-width: 672px) {
+  @media screen and (min-width: 768px) {
+    padding-left: 4rem;
+
     img {
-      width: 496px;
+      width: 350px;
     }
   }
 
   @media screen and (min-width: 990px) {
-    overflow: hidden;
-    margin-top: 0;
+    padding-left: 0;
+    padding-right: 4rem;
+    align-items: center;
 
     img {
-      width: 512px;
-      overflow: hidden;
+      width: 450px;
     }
   }
 
-  @media screen and (min-width: 1296px) {
-    overflow: hidden;
-    margin-top: 0;
-
+  @media screen and (min-width: 1200px) {
     img {
-      width: 820px;
-      overflow: hidden;
+      width: 750px;
     }
   }
 }

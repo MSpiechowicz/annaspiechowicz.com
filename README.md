@@ -1,4 +1,4 @@
-# personal-website-react
+# About this project
 Anna Spiechowicz Website created with Vite and React version 18.
 
 | Technological Stack |
@@ -8,6 +8,10 @@ Anna Spiechowicz Website created with Vite and React version 18.
 | JavaScript |
 | React 18   |
 | Vite 3     |
+
+## Assets
+
+SVG graphic was copied from: https://www.figma.com/file/ke40NcwJ5PYoTDEGRuQtXB/Business-Recruitment-Community
 
 ## License
 
