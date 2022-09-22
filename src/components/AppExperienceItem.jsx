@@ -3,13 +3,17 @@ import PropTypes from "prop-types";
 
 function AppExperienceItem({ title, description, color }) {
   return (
-    <div className="app__experience__item">
-      <h3
-        className={`app__experience__item--${color}`}
-      >
+    <div className="flex flex-col">
+      <h3 className={`text-2xl md:text-4xl lg:text-6xl font-bold
+        ${color === 'red' && 'text-red'}
+        ${color === 'blue' && 'text-blue'}
+        ${color === 'yellow' && 'text-yellow'}
+      `}>
         {title}
       </h3>
-      <p>{description}</p>
+      <p className="text-sm md:text-base lg:text-lg">
+        {description}
+      </p>
     </div>
   );
 }

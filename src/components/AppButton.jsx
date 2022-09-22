@@ -2,9 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function AppButton({ name, href, alt, secondary }) {
-  const dynamicClassName = secondary ?
-    "app__button app__button--secondary" : "app__button";
-
   return (
     <a
       alt={alt}
@@ -12,7 +9,23 @@ function AppButton({ name, href, alt, secondary }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={dynamicClassName}
+      className={`
+        ${secondary ? "bg-white"
+          : "bg-blue"}
+        ${secondary ? "text-blue"
+          : "text-white"}
+        ${secondary ? "hover:bg-blue hover:text-white"
+          : "hover:bg-white hover:text-blue"}
+        border-2
+        border-blue
+        rounded-lg
+        p-3
+        text-xl
+        md:text-2xl
+        transition
+        duration-500
+        ease-in-out
+      `}
     >
       {name}
     </a>

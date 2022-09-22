@@ -3,8 +3,8 @@ import AppButton from "./AppButton";
 
 function AppContact() {
   return (
-    <div className="app__contact">
-      <div className="app__contact__items">
+    <div className="mt-10">
+      <div className="flex flex-row gap-5">
         <AppButton
           href="mailto:kowolikanna@gmail.com"
           alt="Contact me"
