@@ -3,11 +3,11 @@ import AppExperienceItem from "./AppExperienceItem";
 
 function AppExperience() {
   return (
-    <div className="app__experience">
+    <div className="grid grid-cols-3 gap-4 lg:gap-0 mt-6 md:mt-10 max-w-lg lg:max-w-lg">
       <AppExperienceItem
         title="7+"
         description="Years of Experience"
-        color="blue"
+        color="green"
       />
       <AppExperienceItem
         title="20+"
