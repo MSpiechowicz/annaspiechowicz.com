@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function AppContainer({ items }) {
   return (
-    <div className="app__container">
+    <div className="flex flex-col justify-center self-center">
       {items}
     </div>
   );

@@ -8,7 +8,7 @@ import AppGraphic from "./AppGraphic";
 
 function App() {
   return (
-    <div className="app">
+    <div className="w-screen h-screen flex flex-col 2xl:flex-row 2xl:gap-64 justify-center p-8">
       <AppContainer
         items={
           <>
