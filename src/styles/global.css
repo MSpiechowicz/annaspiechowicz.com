@@ -3,25 +3,34 @@
    ========================================================================= */
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
 
   --paper: #f4f7fb;
   --card: #ffffff;
   --card-soft: #f7fafd;
-  --band: #f0f5fb;
+  --band: #e6edf7;
   --track: #e7edf5;
 
   --ink: #0b1220;
   --ink-2: #4a5567;
-  --ink-3: #67717f;
+  --ink-3: #5e6875;
 
   --line: #e1e8f0;
+  --line-soft: #eef2f7;
   --line-strong: #ccd8e8;
+  --hairline: #dde5ef;
+  --route: #d5deea;
+  --marker: #b6c2d4;
+  --row-hover: #f7faff;
+  --chip: #f8fafd;
+  --shadow: 11 18 32;
+  --shadow-a: 40%;
+  --shadow-b: 28%;
 
   --accent: #1b4fd8;
   --accent-deep: #123aa8;
-  --accent-tint: color-mix(in oklab, var(--accent) 8%, #ffffff);
-  --accent-line: color-mix(in oklab, var(--accent) 24%, #ffffff);
+  --accent-tint: color-mix(in oklab, var(--accent) 8%, var(--card));
+  --accent-line: color-mix(in oklab, var(--accent) 24%, var(--card));
   --on-accent: #ffffff;
 
   --shell: min(100% - 3rem, 79rem);
@@ -53,6 +62,71 @@
   font-family: var(--font-sans);
   font-synthesis: none;
 }
+
+/* Dark tokens live in one place and are applied twice: once for visitors whose
+   system asks for dark and who have not chosen otherwise, and once for an
+   explicit choice from the theme switch. Keep the two lists identical. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b1017;
+    --card: #121a26;
+    --card-soft: #18222f;
+    --band: #1b2635;
+    --track: #243146;
+
+    --ink: #e9eef6;
+    --ink-2: #a6b3c6;
+    --ink-3: #8593a8;
+
+    --line: #212d3d;
+    --line-soft: #1a2430;
+    --line-strong: #33455e;
+    --hairline: #2a3749;
+    --route: #2f3f56;
+    --marker: #4a5b73;
+    --row-hover: #18222f;
+    --chip: #18222f;
+
+    /* shadows read as depth on paper and as noise on a dark ground */
+    --shadow: 0 0 0;
+    --shadow-a: 55%;
+    --shadow-b: 45%;
+
+    --accent: #6f96ff;
+    --accent-deep: #9ab6ff;
+    --on-accent: #08101d;
+  }
+}
+
+:root[data-theme="dark"] {
+    --paper: #0b1017;
+    --card: #121a26;
+    --card-soft: #18222f;
+    --band: #1b2635;
+    --track: #243146;
+
+    --ink: #e9eef6;
+    --ink-2: #a6b3c6;
+    --ink-3: #8593a8;
+
+    --line: #212d3d;
+    --line-soft: #1a2430;
+    --line-strong: #33455e;
+    --hairline: #2a3749;
+    --route: #2f3f56;
+    --marker: #4a5b73;
+    --row-hover: #18222f;
+    --chip: #18222f;
+
+    /* shadows read as depth on paper and as noise on a dark ground */
+    --shadow: 0 0 0;
+    --shadow-a: 55%;
+    --shadow-b: 45%;
+
+    --accent: #6f96ff;
+    --accent-deep: #9ab6ff;
+    --on-accent: #08101d;
+  }
 
 /* =========================================================================
    Base
@@ -164,15 +238,13 @@ p {
 }
 
 .mono {
-  font-family: var(--font-mono);
   font-weight: 500;
 }
 
 .label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
@@ -345,7 +417,6 @@ p {
   border-radius: var(--radius-sm);
   background: var(--accent);
   color: var(--on-accent);
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   font-weight: 600;
   transition: transform var(--dur) var(--ease-out);
@@ -412,13 +483,14 @@ p {
   border: 1px solid var(--accent-line);
   border-radius: 999px;
   background: var(--accent-tint);
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   font-weight: 500;
   color: var(--accent);
 }
 
 .status-chip i {
+  position: relative;
+  top: 0.08em;
   display: block;
   width: 6px;
   height: 6px;
@@ -427,10 +499,41 @@ p {
   background: currentcolor;
 }
 
+.theme-switch {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.theme-switch button {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--ink-3);
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.theme-switch button:hover {
+  color: var(--ink);
+}
+
+.theme-switch button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.theme-switch svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
 .language-link {
   display: inline-flex;
   gap: 0.35rem;
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   font-weight: 500;
   color: var(--ink-3);
@@ -519,7 +622,6 @@ p {
 }
 
 .mobile-nav a span {
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   color: var(--ink-3);
 }
@@ -545,10 +647,10 @@ p {
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.625rem;
-  font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
@@ -566,6 +668,11 @@ p {
   font-weight: 600;
   letter-spacing: -0.034em;
   line-height: 1.05;
+  /* German compounds this long ("Produktentscheidungen") cannot fit a 320px
+     screen at display size; the page language lets the browser hyphenate at a
+     legal point, and break-word is the last resort if it cannot */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 .hero h1 em {
@@ -594,7 +701,7 @@ p {
   gap: 0.75rem 1.625rem;
   margin-top: 2.5rem;
   padding-top: 1.625rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
   list-style: none;
 }
 
@@ -602,12 +709,13 @@ p {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-xs);
+  font-size: 0.8125rem;
   color: var(--ink-2);
 }
 
 .hero__meta li::before {
+  position: relative;
+  top: 0.08em;
   display: block;
   width: 5px;
   height: 5px;
@@ -626,7 +734,7 @@ p {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 12px;
-  box-shadow: 0 24px 60px -34px rgb(11 18 32 / 40%);
+  box-shadow: 0 24px 60px -34px rgb(var(--shadow) / var(--shadow-a));
 }
 
 .board__head,
@@ -645,13 +753,14 @@ p {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   font-weight: 500;
   color: var(--ink-3);
 }
 
 .board__hint i {
+  position: relative;
+  top: 0.08em;
   display: block;
   width: 5px;
   height: 5px;
@@ -667,18 +776,18 @@ p {
 
 .board__route {
   fill: none;
-  stroke: #d5deea;
+  stroke: var(--route);
   stroke-linecap: round;
   stroke-width: 1.25;
 }
 
 .board__arrow {
-  fill: var(--ink);
+  fill: var(--ink-2);
 }
 
 .board__frame {
   fill: var(--card-soft);
-  stroke: #dbe4ef;
+  stroke: var(--hairline);
   stroke-width: 1.25;
 }
 
@@ -744,7 +853,7 @@ p {
   gap: 0.625rem;
   margin-top: 0.875rem;
   padding-top: 1.125rem;
-  border-top: 1px solid #eef2f7;
+  border-top: 1px solid var(--line-soft);
 }
 
 .board__phases {
@@ -758,7 +867,6 @@ p {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  font-family: var(--font-mono);
   font-size: var(--fs-mono-xs);
   color: var(--ink-2);
 }
@@ -782,11 +890,11 @@ p {
 }
 
 .board__phases li:nth-child(2) i::before {
-  background: color-mix(in oklab, var(--accent) 62%, #ffffff);
+  background: color-mix(in oklab, var(--accent) 62%, var(--card));
 }
 
 .board__phases li:nth-child(3) i::before {
-  background: color-mix(in oklab, var(--accent) 32%, #ffffff);
+  background: color-mix(in oklab, var(--accent) 32%, var(--card));
 }
 
 /* board motion, only once the board has scrolled into view */
@@ -899,14 +1007,14 @@ p {
 
 .metric:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px -14px rgb(11 18 32 / 28%);
+  box-shadow: 0 10px 28px -14px rgb(var(--shadow) / var(--shadow-b));
 }
 
 .metric__value {
+  font-family: var(--font-mono);
   display: flex;
   align-items: baseline;
   gap: 0.375rem;
-  font-family: var(--font-mono);
   font-size: var(--fs-metric);
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -986,7 +1094,7 @@ p {
 .matrix__row {
   align-items: center;
   padding: 1.75rem;
-  border-bottom: 1px solid #eef2f7;
+  border-bottom: 1px solid var(--line-soft);
   transition: background var(--dur) ease;
 }
 
@@ -995,31 +1103,46 @@ p {
 }
 
 .matrix__row:hover {
-  background: #f7faff;
+  background: var(--row-hover);
 }
 
 .matrix__name {
   display: flex;
-  align-items: baseline;
-  gap: 0.625rem;
+  align-items: center;
+  gap: 0.875rem;
 }
 
-.matrix__name span,
+/* A token rather than a second run of text: setting a numeral beside a word at
+   the same size invites a comparison the two will always lose, because a digit
+   and a capital never look equal even when they measure equal. As a marker it
+   simply reads as the row's number. */
+.matrix__name span {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-tint);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.matrix__row:hover .matrix__name span {
+  box-shadow: 0 0 0 7px var(--accent-tint);
+}
+
 .matrix__name h3 {
   font-size: 1.25rem;
-  line-height: 1.25;
-}
-
-.matrix__name span {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  color: var(--accent);
-}
-
-.matrix__name h3 {
   font-weight: 600;
   letter-spacing: -0.022em;
+  line-height: 1.25;
 }
 
 .matrix__body {
@@ -1036,12 +1159,11 @@ p {
 }
 
 .matrix__tags li {
-  padding: 0.3125rem 0.6875rem;
-  border: 1px solid #dde5ef;
-  border-radius: 5px;
-  background: #f8fafd;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-xs);
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--chip);
+  font-size: 0.8125rem;
   color: var(--ink-2);
 }
 
@@ -1055,6 +1177,18 @@ p {
   justify-content: space-between;
   gap: 2rem;
   margin-bottom: 1.875rem;
+}
+
+.timeline-arc {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+}
+
+.timeline-arc svg {
+  flex: none;
+  opacity: 0.75;
 }
 
 .timeline-head h2 {
@@ -1078,19 +1212,24 @@ p {
   height: 2px;
   border-radius: 1px;
   transform-origin: left center;
-  background: linear-gradient(90deg, var(--accent), #d5deea);
+  background: linear-gradient(90deg, var(--accent), var(--route));
 }
 
 .timeline__list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-rows: auto auto auto auto;
+  gap: 0.5rem 1rem;
   list-style: none;
 }
 
+/* Each entry spans the same four rows - marker, period, role, company - so
+   those sit on shared baselines without any column reserving blank space for
+   a wrap that may never happen. */
 .timeline__item {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
   gap: 0.5rem;
 }
 
@@ -1105,7 +1244,7 @@ p {
   height: 10px;
   margin-top: -1.75rem;
   border-radius: 50%;
-  background: #b6c2d4;
+  background: var(--marker);
   box-shadow: 0 0 0 4px var(--paper);
   content: "";
 }
@@ -1116,8 +1255,9 @@ p {
 
 .timeline__item time {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
+  font-size: 0.875rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--ink-3);
 }
 
@@ -1126,16 +1266,15 @@ p {
 }
 
 .timeline__role {
-  min-height: 2.5rem;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: -0.018em;
-  line-height: 1.32;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
 }
 
 .timeline__company {
   color: var(--ink-2);
-  font-size: var(--fs-sm);
+  font-size: 0.8125rem;
 }
 
 .timeline__detail {
@@ -1169,7 +1308,7 @@ p {
 
 .credential:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px -14px rgb(11 18 32 / 28%);
+  box-shadow: 0 10px 28px -14px rgb(var(--shadow) / var(--shadow-b));
 }
 
 .credential__icon {
@@ -1234,7 +1373,7 @@ p {
   height: 2.875rem;
   align-items: center;
   padding: 0 1.25rem;
-  border: 1px solid #dde5ef;
+  border: 1px solid var(--hairline);
   border-radius: 8px;
   background: var(--card);
   font-size: 1rem;
@@ -1369,7 +1508,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-strong);
 }
 
 .legal-back {
@@ -1404,7 +1543,7 @@ p {
   grid-template-columns: minmax(11rem, 0.4fr) minmax(0, 1fr);
   gap: 0.75rem 2.5rem;
   padding-block: 1.75rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
 }
 
 .legal-content section h2 {
@@ -1553,21 +1692,54 @@ p {
     gap: 1.25rem;
   }
 
-  .timeline__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem 1.25rem;
+  /* below the desktop breakpoint the sequence reads down the page instead of
+     across it: the rail turns vertical and the markers sit on it */
+  .timeline {
+    padding-top: 0;
+    padding-left: 1.75rem;
   }
 
   .timeline__rail {
-    display: none;
+    top: 0.45rem;
+    right: auto;
+    bottom: 0.45rem;
+    left: 4px;
+    width: 2px;
+    height: auto;
+    border-radius: 1px;
+    background: linear-gradient(180deg, var(--accent), var(--route));
+  }
+
+  .timeline__list {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 1.75rem;
+  }
+
+  .timeline__item {
+    position: relative;
+    display: flex;
+    grid-row: auto;
+    flex-direction: column;
+    grid-template-rows: none;
+    gap: 0.3rem;
   }
 
   .timeline__item::before {
+    position: absolute;
+    top: 0.35rem;
+    left: -1.75rem;
     margin-top: 0;
   }
 
-  .timeline {
-    padding-top: 0;
+  /* the rail now draws downwards */
+  .js .timeline__rail {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .js .timeline.is-visible .timeline__rail {
+    transform: none;
   }
 }
 
@@ -1654,13 +1826,8 @@ p {
     --shell: min(100% - 2.5rem, 79rem);
   }
 
-  .metrics,
-  .timeline__list {
+  .metrics {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .timeline__list {
-    gap: 1.5rem;
   }
 
   .timeline__role {
@@ -1671,6 +1838,19 @@ p {
   .not-found__actions .button,
   .contact__actions .button {
     flex-grow: 1;
+  }
+
+  /* the theme switch needs the room the wordmark was using */
+  .brand-mark__name {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .board {

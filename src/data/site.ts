@@ -17,6 +17,7 @@ export interface SiteContent {
     cv: string;
     menu: string;
     status: string;
+    theme: { label: string; light: string; dark: string; system: string };
   };
   hero: {
     eyebrow: string;
@@ -46,7 +47,6 @@ export interface SiteContent {
     certification: { label: string; value: string; detail: string };
   };
   impact: {
-    eyebrow: string;
     title: string;
     intro: string;
     columns: {
@@ -128,7 +128,8 @@ export const siteContent: Record<Locale, SiteContent> = {
       languageLabel: "Switch to German",
       cv: "CV \u00b7 EN",
       menu: "Menu",
-      status: "open to conversations"
+      status: "open to conversations",
+      theme: { label: "Theme", light: "Light", dark: "Dark", system: "System" }
     },
     hero: {
       eyebrow: "Product Owner with analyst precision",
@@ -149,7 +150,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         "User needs, business value, risk and constraints converge into a decision and a roadmap.",
       boardLabel: "Decision pipeline",
-      boardHint: "4 signals \u2192 1 direction",
+      boardHint: "4 signals, one direction",
       inputs: ["User need", "Business value", "Risk", "Constraint"],
       decision: "Decision",
       output: "Roadmap",
@@ -178,7 +179,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       }
     },
     impact: {
-      eyebrow: "Three capabilities",
       title: "Clarity is a product skill.",
       intro:
         "I structure what first looks contradictory until users, business and engineering can act on the same decision.",
@@ -341,7 +341,8 @@ export const siteContent: Record<Locale, SiteContent> = {
       languageLabel: "Zur englischen Version wechseln",
       cv: "CV \u00b7 DE",
       menu: "Men\u00fc",
-      status: "offen f\u00fcr Gespr\u00e4che"
+      status: "offen f\u00fcr Gespr\u00e4che",
+      theme: { label: "Design", light: "Hell", dark: "Dunkel", system: "System" }
     },
     hero: {
       eyebrow: "Product Owner mit analytischer Präzision",
@@ -362,7 +363,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         "Nutzerbedarf, Geschäftswert, Risiko und Rahmenbedingungen führen zu einer Entscheidung und einer Roadmap.",
       boardLabel: "Entscheidungs-Pipeline",
-      boardHint: "4 Signale \u2192 1 Richtung",
+      boardHint: "4 Signale, eine Richtung",
       inputs: ["Nutzerbedarf", "Geschäftswert", "Risiko", "Rahmen"],
       decision: "Entscheidung",
       output: "Roadmap",
@@ -392,7 +393,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       }
     },
     impact: {
-      eyebrow: "Drei Kompetenzen",
       title: "Klarheit ist eine Produktkompetenz.",
       intro:
         "Ich strukturiere, was zunächst widersprüchlich wirkt, bis Nutzer, Business und Entwicklung an derselben Entscheidung arbeiten.",
