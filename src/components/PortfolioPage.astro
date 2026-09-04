@@ -1,0 +1,276 @@
+---
+import DecisionBoard from "./DecisionBoard.astro";
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+import {
+  careerStart,
+  cvUrls,
+  emailAddress,
+  linkedInUrl,
+  type Locale,
+  type SiteContent
+} from "../data/site";
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+}
+
+const { locale, content } = Astro.props;
+const emailUrl = `mailto:${emailAddress}`;
+const cvUrl = cvUrls[locale];
+
+const years = new Date().getFullYear() - careerStart;
+const roles = content.journey.roles.length;
+const languages = content.depth.languages.length;
+
+const pad = (value: number) => String(value).padStart(2, "0");
+
+/* Three passes of the full list, so the loop never opens a gap on a wide screen. */
+const rotate = <T,>(list: T[], by: number) => [...list.slice(by), ...list.slice(0, by)];
+const vocabRows = [content.approach.tools, rotate(content.approach.tools, 6)];
+---
+
+<a class="skip-link" href="#main-content">{content.skipLink}</a>
+<SiteHeader locale={locale} content={content} />
+
+<main id="main-content">
+  <!-- hero -->
+  <section class="hero shell" aria-labelledby="hero-title">
+    <div class="hero__copy" data-reveal>
+      <p class="hero__eyebrow">{content.hero.eyebrow}</p>
+      <h1 id="hero-title">
+        {content.hero.lead} <em>{content.hero.emphasis}</em>
+      </h1>
+      <p class="hero__intro">{content.hero.intro}</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="#work">{content.hero.workCta}</a>
+        <a class="button button--ghost" href={cvUrl} download>
+          {content.hero.cvCta}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 4v12"></path><path d="M6 13l6 6 6-6"></path>
+          </svg>
+        </a>
+      </div>
+      <ul class="hero__meta" role="list">
+        {content.hero.meta.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <DecisionBoard content={content.signal} />
+  </section>
+
+  <!-- metrics -->
+  <section class="shell" aria-label={locale === "de" ? "Berufliche Eckdaten" : "Professional facts"}>
+    <ol class="metrics" role="list">
+      <li class="metric" data-reveal>
+        <p class="label">{content.metrics.years.label}</p>
+        <p class="metric__value">
+          <span data-count={years}>{years}</span>
+          <small>{content.metrics.years.unit}</small>
+        </p>
+        <p class="metric__detail">{content.metrics.years.detail}</p>
+      </li>
+      <li class="metric" data-reveal>
+        <p class="label">{content.metrics.languages.label}</p>
+        <p class="metric__value"><span data-count={languages} data-pad>{pad(languages)}</span></p>
+        <p class="metric__detail">{content.metrics.languages.detail}</p>
+      </li>
+      <li class="metric" data-reveal>
+        <p class="label">{content.metrics.roles.label}</p>
+        <p class="metric__value"><span data-count={roles} data-pad>{pad(roles)}</span></p>
+        <p class="metric__detail">{content.metrics.roles.detail}</p>
+      </li>
+      <li class="metric metric--certification" data-reveal>
+        <p class="label">{content.metrics.certification.label}</p>
+        <p class="metric__value"><span>{content.metrics.certification.value}</span></p>
+        <p class="metric__detail">{content.metrics.certification.detail}</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- capabilities -->
+  <section class="section shell" id="work" aria-labelledby="work-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="work-title">{content.impact.title}</h2>
+        <p>{content.impact.intro}</p>
+      </div>
+      <p class="label">{content.impact.eyebrow}</p>
+    </header>
+
+    <ol class="matrix" role="list" data-reveal>
+      <li class="matrix__head" aria-hidden="true">
+        <span class="label">{content.impact.columns.capability}</span>
+        <span class="label">{content.impact.columns.produces}</span>
+        <span class="label">{content.impact.columns.artifacts}</span>
+      </li>
+      {content.impact.stories.map((story, index) => (
+        <li class="matrix__row">
+          <div class="matrix__name">
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <h3>{story.verb}</h3>
+          </div>
+          <p class="matrix__body">{story.body}</p>
+          <ul class="matrix__tags" role="list">
+            {story.details.map((detail) => <li>{detail}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- journey -->
+  <section class="section shell" id="journey" aria-labelledby="journey-title">
+    <header class="timeline-head" data-reveal>
+      <h2 id="journey-title">{content.journey.title}</h2>
+      <p class="label" aria-hidden="true">code → clarity → product</p>
+    </header>
+
+    <div class="timeline" data-timeline>
+      <div class="timeline__rail" aria-hidden="true"></div>
+      <ol class="timeline__list" role="list">
+        {content.journey.roles.map((role) => (
+          <li class="timeline__item" data-reveal>
+            <time>{role.period}</time>
+            <h3 class="timeline__role">{role.role}</h3>
+            <p class="timeline__company">{role.company}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- credentials -->
+  <section class="section shell" id="credentials" aria-labelledby="credentials-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="credentials-title">{content.depth.title}</h2>
+        <p>{content.depth.intro}</p>
+      </div>
+    </header>
+
+    <ol class="credentials" role="list">
+      {content.depth.credentials.map((credential, index) => (
+        <li class="credential" data-reveal>
+          <span class="credential__icon" aria-hidden="true">
+            {index === 0 && (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="9" r="5"></circle><path d="M8.5 13.2 7 21l5-2.4 5 2.4-1.5-7.8"></path>
+              </svg>
+            )}
+            {index === 1 && (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8.5 12 4l9 4.5-9 4.5z"></path><path d="M6.5 11v5c0 1.7 2.5 3 5.5 3s5.5-1.3 5.5-3v-5"></path>
+              </svg>
+            )}
+            {index === 2 && (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12h4l2.5-6 4 13 2.5-7h5"></path>
+              </svg>
+            )}
+          </span>
+          <h3>{credential.name}</h3>
+          <p>{credential.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- working vocabulary -->
+  <section class="section vocab" aria-labelledby="vocab-title" data-vocab>
+    <header class="vocab__head shell" data-reveal>
+      <h2 class="label" id="vocab-title">{content.approach.toolsLabel}</h2>
+      <p>{content.approach.toolsNote}</p>
+    </header>
+
+    <div class="vocab__rails shell">
+      {vocabRows.map((row, rowIndex) => (
+        <ul class:list={["vocab__track", `vocab__track--${rowIndex === 0 ? "a" : "b"}`]} role="list">
+          {[0, 1, 2].map((pass) =>
+            row.map((tool) => <li aria-hidden={pass > 0 ? "true" : undefined}>{tool}</li>)
+          )}
+        </ul>
+      ))}
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section class="section shell contact" id="contact" aria-labelledby="contact-title">
+    <div class="contact__inner" data-reveal>
+      <div>
+        <h2 id="contact-title">{content.contact.title}</h2>
+        <p>{content.contact.body}</p>
+      </div>
+      <div class="contact__actions">
+        <a class="button button--light" href={emailUrl}>{content.contact.emailCta}</a>
+        <a class="button button--outline" href={linkedInUrl} target="_blank" rel="noreferrer">
+          {content.contact.linkedInCta}
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<SiteFooter locale={locale} content={content} />
+
+<script>
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* one observer drives every reveal, the board, the rail and the ticker */
+  const targets = document.querySelectorAll<HTMLElement>(
+    "[data-reveal], [data-board], [data-timeline], [data-vocab]"
+  );
+
+  if (reduced || !("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -8%", threshold: 0.1 }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+  }
+
+  /* metric numbers count up the first time they are seen */
+  const counters = document.querySelectorAll<HTMLElement>("[data-count]");
+
+  if (!reduced && "IntersectionObserver" in window) {
+    const countUp = (el: HTMLElement) => {
+      const target = Number(el.dataset.count ?? 0);
+      const padded = el.dataset.pad !== undefined;
+      const duration = 1500;
+      let started: number | null = null;
+
+      const step = (now: number) => {
+        if (started === null) started = now;
+        const p = Math.min(1, (now - started) / duration);
+        const value = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        el.textContent = padded ? String(value).padStart(2, "0") : String(value);
+        if (p < 1) requestAnimationFrame(step);
+      };
+
+      requestAnimationFrame(step);
+    };
+
+    const counterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          countUp(entry.target as HTMLElement);
+          counterObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    counters.forEach((el) => counterObserver.observe(el));
+  }
+</script>

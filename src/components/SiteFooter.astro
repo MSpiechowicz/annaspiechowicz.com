@@ -1,0 +1,28 @@
+---
+import type { Locale, SiteContent } from "../data/site";
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+}
+
+const { locale, content } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <div class="site-footer__identity">
+      <strong>Anna Spiechowicz</strong>
+      <span>{content.footer.role}</span>
+    </div>
+    <div class="site-footer__meta">
+      <span>{content.footer.location}</span>
+      <span>© {currentYear} Anna Spiechowicz. {content.footer.rights}</span>
+    </div>
+    <nav class="legal-nav" aria-label={locale === "de" ? "Rechtliche Hinweise" : "Legal information"}>
+      <a href="/impressum/">{content.footer.imprint}</a>
+      <a href="/datenschutz/">{content.footer.privacy}</a>
+    </nav>
+  </div>
+</footer>
