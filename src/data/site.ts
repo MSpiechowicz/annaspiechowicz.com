@@ -9,12 +9,10 @@ export interface SiteContent {
   skipLink: string;
   navigation: {
     work: string;
-    journey: string;
     credentials: string;
     approach: string;
     contact: string;
     languageLabel: string;
-    cv: string;
     menu: string;
     status: string;
     theme: { label: string; light: string; dark: string; system: string };
@@ -25,7 +23,6 @@ export interface SiteContent {
     emphasis: string;
     intro: string;
     workCta: string;
-    cvCta: string;
     meta: string[];
   };
   signal: {
@@ -43,7 +40,7 @@ export interface SiteContent {
   metrics: {
     years: { label: string; unit: string; detail: string };
     languages: { label: string; detail: string };
-    roles: { label: string; detail: string };
+    roles: { label: string; value: number; detail: string };
     certification: { label: string; value: string; detail: string };
   };
   impact: {
@@ -59,16 +56,6 @@ export interface SiteContent {
       title: string;
       body: string;
       details: string[];
-    }>;
-  };
-  journey: {
-    title: string;
-    intro: string;
-    roles: Array<{
-      period: string;
-      role: string;
-      company: string;
-      detail: string;
     }>;
   };
   approach: {
@@ -99,7 +86,6 @@ export interface SiteContent {
     body: string;
     emailCta: string;
     linkedInCta: string;
-    cvCta: string;
   };
   footer: {
     role: string;
@@ -121,12 +107,10 @@ export const siteContent: Record<Locale, SiteContent> = {
     skipLink: "Skip to content",
     navigation: {
       work: "Work",
-      journey: "Journey",
       credentials: "Credentials",
       approach: "Approach",
       contact: "Contact",
       languageLabel: "Switch to German",
-      cv: "CV \u00b7 EN",
       menu: "Menu",
       status: "open to conversations",
       theme: { label: "Theme", light: "Light", dark: "Dark", system: "System" }
@@ -138,10 +122,9 @@ export const siteContent: Record<Locale, SiteContent> = {
       intro:
         "Developer foundations, analyst precision and product ownership for teams building complex software \u2014 in English and German, since 2012.",
       workCta: "See my work",
-      cvCta: "Download CV",
       meta: [
         "Frankfurt Rhine-Main, Germany",
-        "equensWorldline SE",
+        "Enterprise software teams",
         "IREB certified"
       ]
     },
@@ -170,6 +153,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       },
       roles: {
         label: "Roles held",
+        value: 5,
         detail: "From junior programmer to Product Owner"
       },
       certification: {
@@ -208,43 +192,6 @@ export const siteContent: Record<Locale, SiteContent> = {
           body:
             "I train in English and German, mentor colleagues and build shared standards that make good analysis easier to repeat.",
           details: ["Bilingual training", "Mentoring", "BA community"]
-        }
-      ]
-    },
-    journey: {
-      title: "Built from both sides of the table.",
-      intro:
-        "My product judgment is grounded in building software, analysing systems and aligning people around decisions.",
-      roles: [
-        {
-          period: "2023 \u2014 now",
-          role: "Business Analyst / Product Owner",
-          company: "equensWorldline SE Germany",
-          detail: "Backlog priorities, PI Planning, roadmaps, workshops, Figma and AI agents."
-        },
-        {
-          period: "2022",
-          role: "Business Analyst",
-          company: "Wincor Nixdorf International GmbH",
-          detail: "Mentoring junior colleagues and supporting pre-sales work."
-        },
-        {
-          period: "2017 \u2014 2021",
-          role: "Software Engineer / Business Analyst",
-          company: "Diebold Nixdorf BPO Sp. z o.o.",
-          detail: "Product processes, company standards, training and the BA community."
-        },
-        {
-          period: "2014 \u2014 2017",
-          role: "Software Developer / Business Analyst",
-          company: "Wincor Nixdorf / Diebold Nixdorf",
-          detail: "Customer requirements, workshops, technical documentation and delivery."
-        },
-        {
-          period: "2012 \u2014 2014",
-          role: "Junior Programmer",
-          company: "KOTRAK-Med and SOMAR",
-          detail: "The technical beginning of a career that moved steadily closer to product decisions."
         }
       ]
     },
@@ -313,8 +260,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       body:
         "I am open to thoughtful conversations about product ownership, business analysis and teams solving hard software problems.",
       emailCta: "Email Anna",
-      linkedInCta: "LinkedIn",
-      cvCta: "Download CV"
+      linkedInCta: "LinkedIn"
     },
     footer: {
       role: "Product Owner and Business Analyst",
@@ -334,12 +280,10 @@ export const siteContent: Record<Locale, SiteContent> = {
     skipLink: "Zum Inhalt springen",
     navigation: {
       work: "Arbeit",
-      journey: "Werdegang",
       credentials: "Qualifikationen",
       approach: "Arbeitsweise",
       contact: "Kontakt",
       languageLabel: "Zur englischen Version wechseln",
-      cv: "CV \u00b7 DE",
       menu: "Men\u00fc",
       status: "offen f\u00fcr Gespr\u00e4che",
       theme: { label: "Design", light: "Hell", dark: "Dunkel", system: "System" }
@@ -351,10 +295,9 @@ export const siteContent: Record<Locale, SiteContent> = {
       intro:
         "Technisches Fundament, analytische Präzision und Product Ownership für Teams, die komplexe Software entwickeln \u2014 auf Englisch und Deutsch, seit 2012.",
       workCta: "Meine Arbeit",
-      cvCta: "CV herunterladen",
       meta: [
         "Frankfurt Rhein-Main, Deutschland",
-        "equensWorldline SE",
+        "Enterprise-Softwareteams",
         "IREB-zertifiziert"
       ]
     },
@@ -384,6 +327,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       },
       roles: {
         label: "Positionen",
+        value: 5,
         detail: "Vom Junior Programmer zur Product Ownerin"
       },
       certification: {
@@ -422,43 +366,6 @@ export const siteContent: Record<Locale, SiteContent> = {
           body:
             "Ich trainiere auf Englisch und Deutsch, begleite Kollegen und entwickle Standards, mit denen gute Analyse wiederholbar wird.",
           details: ["Zweisprachige Trainings", "Mentoring", "BA Community"]
-        }
-      ]
-    },
-    journey: {
-      title: "Ich kenne beide Seiten der Entwicklung.",
-      intro:
-        "Meine Produktentscheidungen beruhen auf Erfahrung in Softwareentwicklung, Systemanalyse und der gemeinsamen Ausrichtung von Teams.",
-      roles: [
-        {
-          period: "2023 \u2014 heute",
-          role: "Business Analyst / Product Owner",
-          company: "equensWorldline SE Germany",
-          detail: "Backlog-Prioritäten, PI Planning, Roadmaps, Workshops, Figma und KI-Agenten."
-        },
-        {
-          period: "2022",
-          role: "Business Analyst",
-          company: "Wincor Nixdorf International GmbH",
-          detail: "Mentoring von Junior-Kollegen und Unterstützung im Pre-Sales."
-        },
-        {
-          period: "2017 \u2014 2021",
-          role: "Software Engineer / Business Analyst",
-          company: "Diebold Nixdorf BPO Sp. z o.o.",
-          detail: "Produktprozesse, Unternehmensstandards, Trainings und die BA Community."
-        },
-        {
-          period: "2014 \u2014 2017",
-          role: "Software Developer / Business Analyst",
-          company: "Wincor Nixdorf / Diebold Nixdorf",
-          detail: "Kundenanforderungen, Workshops, technische Dokumentation und Umsetzung."
-        },
-        {
-          period: "2012 \u2014 2014",
-          role: "Junior Programmer",
-          company: "KOTRAK-Med und SOMAR",
-          detail: "Der technische Anfang einer Laufbahn, die immer näher an Produktentscheidungen führte."
         }
       ]
     },
@@ -528,8 +435,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       body:
         "Ich bin offen für Gespräche über Product Ownership, Business-Analyse und Teams, die anspruchsvolle Softwareprobleme lösen.",
       emailCta: "Anna kontaktieren",
-      linkedInCta: "LinkedIn",
-      cvCta: "CV herunterladen"
+      linkedInCta: "LinkedIn"
     },
     footer: {
       role: "Product Owner und Business Analystin",
@@ -546,7 +452,3 @@ export const alternatePath = (locale: Locale) => (locale === "en" ? "/de/" : "/"
 export const careerStart = 2012;
 export const emailAddress = "anna.maria.spiechowicz@gmail.com";
 export const linkedInUrl = "https://www.linkedin.com/in/anna-spiechowicz-166b25108/";
-export const cvUrls: Record<Locale, string> = {
-  en: "/anna-spiechowicz-cv-en.pdf",
-  de: "/anna-spiechowicz-cv-de.pdf"
-};

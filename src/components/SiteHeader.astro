@@ -1,5 +1,5 @@
 ---
-import { alternatePath, cvUrls, type Locale, type SiteContent } from "../data/site";
+import { alternatePath, type Locale, type SiteContent } from "../data/site";
 
 interface Props {
   locale: Locale;
@@ -7,11 +7,10 @@ interface Props {
 }
 
 const { locale, content } = Astro.props;
-const cvUrl = cvUrls[locale];
 
 const links = [
   { href: "#work", label: content.navigation.work },
-  { href: "#journey", label: content.navigation.journey },
+  { href: "#approach", label: content.navigation.approach },
   { href: "#credentials", label: content.navigation.credentials },
   { href: "#contact", label: content.navigation.contact }
 ];
@@ -47,7 +46,6 @@ const links = [
         <span aria-hidden="true">/</span>
         <span class:list={{ active: locale === "de" }}>DE</span>
       </a>
-      <a class="header-cv" href={cvUrl} download>{content.navigation.cv}</a>
       <button
         class="nav-toggle"
         type="button"
@@ -74,10 +72,6 @@ const links = [
         <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
       </a>
     ))}
-    <a href={cvUrl} download>
-      {content.navigation.cv}
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"></path><path d="M6 13l6 6 6-6"></path></svg>
-    </a>
   </nav>
 </header>
 

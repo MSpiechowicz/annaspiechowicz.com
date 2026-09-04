@@ -31,7 +31,6 @@ English is served at `/` and German at `/de/`.
 | `src/components/` | Page shell, header, footer and `DecisionBoard.astro` — the animated hero diagram. |
 | `src/pages/` | `/`, `/de/`, `/impressum/`, `/datenschutz/`, `404`. |
 | `public/og-image.svg` | Source of the social share image; fonts are embedded so it rasterises exactly. |
-| `public/anna-spiechowicz-cv-*.pdf` | One CV per language; `cvUrls` in `site.ts` picks by locale. |
 | `vercel.json` | Trailing-slash behaviour, asset caching and security headers. |
 
 To restyle the site, change the custom properties in the `:root` block at the top of
@@ -60,17 +59,14 @@ when a section scrolls into view, and switched off entirely under
 
 - the decision board's signals travel their routes while each input's LED strip charges
 - the metric numbers count up the first time they are seen
-- the timeline rail draws itself left to right
 - the working-vocabulary rows drift in opposite directions
 
-`--years` and the role count are computed from `careerStart` in `src/data/site.ts` and the
-length of the journey list, so they stay correct without being edited.
+`--years` is computed from `careerStart` in `src/data/site.ts`, so it stays correct without
+being edited.
 
 ## Launch checklist
 
 - Anna reviews and approves the English and German copy.
-- Anna reviews both public CVs before each deploy. Both currently include her phone
-  number and street address, so treat them as fully public documents.
 - Anna or a qualified adviser reviews the Impressum and privacy notice.
 - The Vercel project uses `npm run build`, publishes `dist`, and installs with npm
   (`npm ci`), not yarn. Node is pinned to 22.x by `engines` and `.nvmrc`.
