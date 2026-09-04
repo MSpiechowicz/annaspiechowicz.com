@@ -1,0 +1,17 @@
+---
+import PortfolioPage from "../../components/PortfolioPage.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { siteContent } from "../../data/site";
+
+const content = siteContent.de;
+---
+
+<BaseLayout
+  locale="de"
+  title={content.meta.title}
+  description={content.meta.description}
+  alternatePath="/"
+  structuredData
+>
+  <PortfolioPage locale="de" content={content} />
+</BaseLayout>

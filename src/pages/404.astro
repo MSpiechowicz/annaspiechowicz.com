@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  locale="en"
+  title="Page not found | Anna Spiechowicz"
+  description="The requested page could not be found."
+  noindex
+>
+  <header class="legal-header shell">
+    <a class="brand-mark" href="/">
+      <b aria-hidden="true">AS</b>
+      Anna Spiechowicz
+    </a>
+    <a class="legal-back" href="/">Back home</a>
+  </header>
+
+  <main class="not-found shell">
+    <p class="not-found__code" aria-hidden="true">404</p>
+    <h1>This path needs a clearer direction.</h1>
+    <p class="not-found__text">The page you asked for is not here. Die gesuchte Seite wurde nicht gefunden.</p>
+    <div class="not-found__actions">
+      <a class="button button--primary" href="/">Back home</a>
+      <a class="button button--ghost" href="/de/">Deutsche Startseite</a>
+    </div>
+  </main>
+</BaseLayout>
