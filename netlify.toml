@@ -1,4 +1,6 @@
-# Production config for the Netlify site. Astro emits a fully static dist/.
+# Production is served by Vercel (see vercel.json). This file exists only so the
+# Netlify integration still attached to the repository builds instead of failing;
+# delete it once that integration is disconnected.
 
 [build]
   command = "npm run build"
