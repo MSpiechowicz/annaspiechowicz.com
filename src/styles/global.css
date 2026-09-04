@@ -417,15 +417,22 @@ p {
 .primary-nav a::after {
   position: absolute;
   right: 0;
-  bottom: 0.1rem;
+  bottom: 2px;
   left: 0;
-  height: 1.5px;
+  /* whole pixels, and a layer that stays promoted, so the bar rasterizes the
+     same before, during and after the wipe */
+  height: 2px;
   border-radius: 1px;
   transform: scaleX(0);
   transform-origin: right;
   background: var(--accent);
   content: "";
-  transition: transform var(--dur) var(--ease-out);
+  /* the origin only flips back once the bar has finished retracting, so a bar
+     caught mid-wipe never jumps its anchor across the link */
+  transition:
+    transform var(--dur) var(--ease-out),
+    transform-origin 0s linear var(--dur);
+  will-change: transform;
 }
 
 .primary-nav a:hover {
@@ -435,6 +442,9 @@ p {
 .primary-nav a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+  transition:
+    transform var(--dur) var(--ease-out),
+    transform-origin 0s;
 }
 
 .header-actions {
@@ -502,7 +512,9 @@ p {
 .language-link {
   display: inline-flex;
   gap: 0.35rem;
-  font-size: var(--fs-mono-xs);
+  /* one step under the nav links rather than the site-wide mono-xs, which is
+     too small to read at this weight */
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--ink-3);
 }
