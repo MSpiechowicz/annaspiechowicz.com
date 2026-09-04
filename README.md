@@ -12,7 +12,7 @@ npm install
 npm run dev
 ```
 
-The production build is static and is deployed by Vercel:
+The production build is static and is deployed by Netlify:
 
 ```sh
 npm run build    # astro check + astro build -> dist/
@@ -32,7 +32,7 @@ English is served at `/` and German at `/de/`.
 | `src/pages/` | `/`, `/de/`, `/impressum/`, `/datenschutz/`, `404`. |
 | `public/og-image.svg` | Source of the social share image; fonts are embedded so it rasterises exactly. |
 | `public/anna-spiechowicz-cv-*.pdf` | One CV per language; `cvUrls` in `site.ts` picks by locale. |
-| `vercel.json` | Trailing-slash behaviour, asset caching and security headers. |
+| `netlify.toml` | Build command, asset caching and security headers. |
 
 To restyle the site, change the custom properties in the `:root` block at the top of
 `global.css`. Everything else reads from them — `--accent` alone re-themes the whole page,
@@ -58,7 +58,7 @@ length of the journey list, so they stay correct without being edited.
 - Anna reviews both public CVs before each deploy. Both currently include her phone
   number and street address, so treat them as fully public documents.
 - Anna or a qualified adviser reviews the Impressum and privacy notice.
-- The Vercel project uses `npm run build` and publishes `dist`.
+- The Netlify site uses `npm run build` and publishes `dist`.
 - The custom domain points to the approved production deployment.
 
 ## License
