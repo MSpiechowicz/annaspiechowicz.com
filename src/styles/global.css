@@ -1294,10 +1294,20 @@ p {
 
 .bpmn__stations {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* tracks and gutter are measured off the model itself, so each column stays
+     centred on its task; the third track is the gap the gateway sits in */
+  grid-template-columns: var(--tracks);
   gap: 0;
-  padding: 0 6%;
+  padding: 0 var(--gutter);
   list-style: none;
+}
+
+.bpmn__station:nth-child(3) {
+  grid-column: 4;
+}
+
+.bpmn__station:nth-child(4) {
+  grid-column: 5;
 }
 
 /* the air between columns is padding rather than gap: a gap would pull the
@@ -1367,16 +1377,16 @@ p {
     opacity: 0;
   }
   6% { opacity: 1; }
-  11% { offset-distance: 14.4%; }
-  20% { offset-distance: 14.4%; }
-  29% { offset-distance: 38.2%; }
-  38% { offset-distance: 38.2%; }
+  11% { offset-distance: 13.1%; }
+  20% { offset-distance: 13.1%; }
+  29% { offset-distance: 34.1%; }
+  38% { offset-distance: 34.1%; }
   45% { offset-distance: 50%; }
   52% { offset-distance: 50%; }
-  60% { offset-distance: 61.8%; }
-  69% { offset-distance: 61.8%; }
-  79% { offset-distance: 85.6%; }
-  88% { offset-distance: 85.6%; }
+  60% { offset-distance: 65.9%; }
+  69% { offset-distance: 65.9%; }
+  79% { offset-distance: 86.9%; }
+  88% { offset-distance: 86.9%; }
   95% {
     offset-distance: 100%;
     opacity: 1;
@@ -1914,7 +1924,10 @@ p {
     margin-top: 1.25rem;
   }
 
-  .bpmn__station {
+  .bpmn__station,
+  .bpmn__station:nth-child(3),
+  .bpmn__station:nth-child(4) {
+    grid-column: auto;
     padding: 0;
     text-align: left;
   }
