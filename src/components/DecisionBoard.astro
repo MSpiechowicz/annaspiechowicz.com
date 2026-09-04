@@ -1,0 +1,116 @@
+---
+import type { SiteContent } from "../data/site";
+
+interface Props {
+  content: SiteContent["signal"];
+}
+
+const { content } = Astro.props;
+
+/*
+  460 x 360 board. The outer inputs sit flush to the edges and the inner pair is
+  inset, so every route runs in its own lane and clears the chip it passes.
+  Each chip's LED and its two travelling signals share a delay, so a chip
+  visibly charges just before its signal departs.
+*/
+const CHIP_W = 196;
+const CHIP_H = 46;
+
+const chips = [
+  { x: 0, y: 0, side: "left", delay: 0 },
+  { x: 264, y: 0, side: "right", delay: 900 },
+  { x: 26, y: 60, side: "left", delay: 450 },
+  { x: 238, y: 60, side: "right", delay: 1350 }
+] as const;
+
+const routes = [
+  { d: "M13 46 C13 170 60 210 179 232", delay: 0 },
+  { d: "M447 46 C447 170 400 210 281 232", delay: 900 },
+  { d: "M124 106 C124 160 140 190 192 212", delay: 450 },
+  { d: "M336 106 C336 160 320 190 268 212", delay: 1350 }
+];
+
+/* two signals per route, half a cycle apart */
+const signals = routes.flatMap((route) => [
+  { d: route.d, delay: route.delay },
+  { d: route.d, delay: route.delay + 1800 }
+]);
+---
+
+<figure class="board" data-board data-reveal>
+  <figcaption class="board__head">
+    <span class="label">{content.boardLabel}</span>
+    <span class="board__hint"><i aria-hidden="true"></i>{content.boardHint}</span>
+  </figcaption>
+
+  <svg
+    class="board__graphic"
+    viewBox="0 0 460 360"
+    role="img"
+    aria-labelledby="board-title board-desc"
+  >
+    <title id="board-title">{content.title}</title>
+    <desc id="board-desc">{content.description}</desc>
+
+    <g aria-hidden="true">
+      {routes.map((route) => <path class="board__route" d={route.d} />)}
+      <path class="board__route" d="M230 304 V336" />
+      <polygon class="board__arrow" points="223,334 230,346 237,334" />
+      {signals.map((signal) => (
+        <circle
+          class="board__dot"
+          cx="0"
+          cy="0"
+          r="4"
+          style={`offset-path: path('${signal.d}'); animation-delay: ${signal.delay}ms`}
+        />
+      ))}
+    </g>
+
+    {chips.map((chip, index) => (
+      <g class="board__chip">
+        <rect class="board__frame" x={chip.x} y={chip.y} width={CHIP_W} height={CHIP_H} rx="7" />
+        <circle class="board__marker" cx={chip.side === "left" ? chip.x + 20 : chip.x + CHIP_W - 20} cy={chip.y + 23} r="3.5" />
+        <text
+          x={chip.side === "left" ? chip.x + 34 : chip.x + CHIP_W - 34}
+          y={chip.y + 23}
+          text-anchor={chip.side === "left" ? "start" : "end"}
+          dominant-baseline="central"
+        >
+          {content.inputs[index]}
+        </text>
+        <rect class="board__track" x={chip.x + 14} y={chip.y + 39} width="168" height="3" rx="1.5" />
+        <rect
+          class="board__led"
+          x={chip.x + 14}
+          y={chip.y + 39}
+          width="168"
+          height="3"
+          rx="1.5"
+          style={`animation-delay: ${chip.delay}ms`}
+        />
+      </g>
+    ))}
+
+    <g aria-hidden="true">
+      <circle class="board__ping" cx="230" cy="250" r="54" />
+      <circle class="board__orbit" cx="230" cy="250" r="72" />
+      <circle class="board__disc" cx="230" cy="250" r="54" />
+      <text class="board__decision" x="230" y="250" text-anchor="middle" dominant-baseline="central">
+        {content.decision}
+      </text>
+    </g>
+  </svg>
+
+  <div class="board__foot">
+    <div class="board__foot-head">
+      <span class="label">{content.output}</span>
+      <span class="board__hint">{content.outputHint}</span>
+    </div>
+    <ol class="board__phases">
+      {content.phases.map((phase) => (
+        <li><i aria-hidden="true"></i>{phase}</li>
+      ))}
+    </ol>
+  </div>
+</figure>

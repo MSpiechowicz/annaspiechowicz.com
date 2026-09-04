@@ -1,0 +1,99 @@
+---
+import { alternatePath, cvUrls, type Locale, type SiteContent } from "../data/site";
+
+interface Props {
+  locale: Locale;
+  content: SiteContent;
+}
+
+const { locale, content } = Astro.props;
+const cvUrl = cvUrls[locale];
+
+const links = [
+  { href: "#work", label: content.navigation.work },
+  { href: "#journey", label: content.navigation.journey },
+  { href: "#credentials", label: content.navigation.credentials },
+  { href: "#contact", label: content.navigation.contact }
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <div class="header-left">
+      <a class="brand-mark" href={locale === "en" ? "/" : "/de/"}>
+        <b aria-hidden="true">AS</b>
+        Anna Spiechowicz
+      </a>
+      <nav class="primary-nav" aria-label={locale === "de" ? "Hauptnavigation" : "Primary navigation"}>
+        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+
+    <div class="header-actions">
+      <p class="status-chip"><i aria-hidden="true"></i>{content.navigation.status}</p>
+      <a class="language-link" href={alternatePath(locale)} aria-label={content.navigation.languageLabel}>
+        <span class:list={{ active: locale === "en" }}>EN</span>
+        <span aria-hidden="true">/</span>
+        <span class:list={{ active: locale === "de" }}>DE</span>
+      </a>
+      <a class="header-cv" href={cvUrl} download>{content.navigation.cv}</a>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label={content.navigation.menu}
+        data-nav-toggle
+      >
+        <i aria-hidden="true"></i>
+        <i aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    class="mobile-nav shell"
+    id="mobile-nav"
+    aria-label={locale === "de" ? "Mobile Navigation" : "Mobile navigation"}
+    hidden
+  >
+    {links.map((link, index) => (
+      <a href={link.href}>
+        {link.label}
+        <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+      </a>
+    ))}
+    <a href={cvUrl} download>
+      {content.navigation.cv}
+      <span aria-hidden="true">↓</span>
+    </a>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const panel = document.querySelector<HTMLElement>("#mobile-nav");
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    panel.addEventListener("click", (event) => {
+      if ((event.target as HTMLElement).closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+
+    window.matchMedia("(min-width: 58.0625rem)").addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

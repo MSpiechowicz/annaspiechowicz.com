@@ -1,12 +1,26 @@
-# example netlify.toml
+# Production config for the Netlify site. Astro emits a fully static dist/.
+
 [build]
-  command = "vite build"
-  functions = "netlify/functions"
+  command = "npm run build"
   publish = "dist"
 
-## Uncomment to use this redirect for Single Page Applications
-## Not needed for static site generators.
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[build.environment]
+  NODE_VERSION = "22"
+
+# No SPA catch-all redirect: Astro emits dist/404.html and real directory
+# index files for /de/, /impressum/ and /datenschutz/, which Netlify serves
+# natively. A "/* -> /index.html" rule would return the English homepage
+# for every one of those routes.
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
