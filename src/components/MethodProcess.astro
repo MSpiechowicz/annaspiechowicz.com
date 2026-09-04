@@ -69,9 +69,9 @@ const wide = (() => {
     no longer be four equal columns; `tracks` and `gutter` below are handed to
     it as custom properties so the model stays the single source of truth.
   */
-  const h = 72;
-  const top = 70;
+  const h = 64;
   const mid = 106;
+  const top = mid - h / 2;
   const flow = 50;
   const startX = 24;
   const endX = 976;
@@ -106,15 +106,19 @@ const wide = (() => {
       pct(half * 2),
       pct(half * 2)
     ].join(" "),
-    /* the captions share one line just below the task row, under the element
-       each names. The outer two are anchored to the canvas edge rather than
-       centred on their event, so a longer translation grows inwards into the
-       gutter instead of off the edge */
-    start: { at: { x: startX, y: mid }, label: { x: 2, y: mid + 44, anchor: "start" } },
-    end: { at: { x: endX, y: mid }, label: { x: 998, y: mid + 44, anchor: "end" } },
+    /*
+      The captions share one line under the element each names. The outer two
+      are anchored to the canvas edge rather than centred on their event, so a
+      longer translation grows inwards rather than off the edge - and the line
+      clears the bottom of the task row, because the longest of them
+      ("Entscheidung") is wider than the gutter and would otherwise run into the
+      last task box.
+    */
+    start: { at: { x: startX, y: mid }, label: { x: 2, y: top + h + 19, anchor: "start" } },
+    end: { at: { x: endX, y: mid }, label: { x: 998, y: top + h + 19, anchor: "end" } },
     gateway: {
       at: gate,
-      label: { x: gate.x, y: mid + 44, anchor: "middle" }
+      label: { x: gate.x, y: top + h + 19, anchor: "middle" }
     },
     loop: `M${gate.x} ${mid - GATE} V24 H${cols[0]} V${top}`,
     loopLabel: { x: (gate.x + cols[0]) / 2, y: 16, anchor: "middle", rotate: 0 },
