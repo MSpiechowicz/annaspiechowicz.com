@@ -668,6 +668,11 @@ p {
   font-weight: 600;
   letter-spacing: -0.034em;
   line-height: 1.05;
+  /* German compounds this long ("Produktentscheidungen") cannot fit a 320px
+     screen at display size; the page language lets the browser hyphenate at a
+     legal point, and break-word is the last resort if it cannot */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 .hero h1 em {
@@ -1687,21 +1692,54 @@ p {
     gap: 1.25rem;
   }
 
-  .timeline__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem 1.25rem;
+  /* below the desktop breakpoint the sequence reads down the page instead of
+     across it: the rail turns vertical and the markers sit on it */
+  .timeline {
+    padding-top: 0;
+    padding-left: 1.75rem;
   }
 
   .timeline__rail {
-    display: none;
+    top: 0.45rem;
+    right: auto;
+    bottom: 0.45rem;
+    left: 4px;
+    width: 2px;
+    height: auto;
+    border-radius: 1px;
+    background: linear-gradient(180deg, var(--accent), var(--route));
+  }
+
+  .timeline__list {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 1.75rem;
+  }
+
+  .timeline__item {
+    position: relative;
+    display: flex;
+    grid-row: auto;
+    flex-direction: column;
+    grid-template-rows: none;
+    gap: 0.3rem;
   }
 
   .timeline__item::before {
+    position: absolute;
+    top: 0.35rem;
+    left: -1.75rem;
     margin-top: 0;
   }
 
-  .timeline {
-    padding-top: 0;
+  /* the rail now draws downwards */
+  .js .timeline__rail {
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+
+  .js .timeline.is-visible .timeline__rail {
+    transform: none;
   }
 }
 
@@ -1788,13 +1826,8 @@ p {
     --shell: min(100% - 2.5rem, 79rem);
   }
 
-  .metrics,
-  .timeline__list {
+  .metrics {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .timeline__list {
-    gap: 1.5rem;
   }
 
   .timeline__role {
