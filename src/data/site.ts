@@ -61,6 +61,8 @@ export interface SiteContent {
   approach: {
     title: string;
     intro: string;
+    flowLabel: string;
+    flowHint: string;
     methods: Array<{
       verb: string;
       body: string;
@@ -198,6 +200,8 @@ export const siteContent: Record<Locale, SiteContent> = {
     approach: {
       title: "A practical way through complexity.",
       intro: "The method changes with the problem. The discipline stays consistent.",
+      flowLabel: "How the work moves",
+      flowHint: "scattered input, settled decision",
       methods: [
         {
           verb: "Listen",
@@ -372,6 +376,8 @@ export const siteContent: Record<Locale, SiteContent> = {
     approach: {
       title: "Ein praktischer Weg durch Komplexität.",
       intro: "Die Methode ändert sich mit dem Problem. Die Disziplin bleibt.",
+      flowLabel: "Wie die Arbeit verläuft",
+      flowHint: "verstreuter Input, klare Entscheidung",
       methods: [
         {
           verb: "Zuhören",
