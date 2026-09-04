@@ -63,41 +63,9 @@
   font-synthesis: none;
 }
 
-/* Dark tokens live in one place and are applied twice: once for visitors whose
-   system asks for dark and who have not chosen otherwise, and once for an
-   explicit choice from the theme switch. Keep the two lists identical. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0b1017;
-    --card: #121a26;
-    --card-soft: #18222f;
-    --band: #1b2635;
-    --track: #243146;
-
-    --ink: #e9eef6;
-    --ink-2: #a6b3c6;
-    --ink-3: #8593a8;
-
-    --line: #212d3d;
-    --line-soft: #1a2430;
-    --line-strong: #33455e;
-    --hairline: #2a3749;
-    --route: #2f3f56;
-    --marker: #4a5b73;
-    --row-hover: #18222f;
-    --chip: #18222f;
-
-    /* shadows read as depth on paper and as noise on a dark ground */
-    --shadow: 0 0 0;
-    --shadow-a: 55%;
-    --shadow-b: 45%;
-
-    --accent: #6f96ff;
-    --accent-deep: #9ab6ff;
-    --on-accent: #08101d;
-  }
-}
-
+/* Dark is only ever an explicit choice from the theme switch. The site does not
+   follow prefers-color-scheme: a visitor whose system is dark still gets the
+   light page until they ask for dark. */
 :root[data-theme="dark"] {
     --paper: #0b1017;
     --card: #121a26;
@@ -543,23 +511,6 @@ p {
   color: var(--ink);
 }
 
-.header-cv {
-  display: inline-flex;
-  align-items: center;
-  height: 2.375rem;
-  padding: 0 1.125rem;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: var(--on-accent);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  transition: background var(--dur) var(--ease-out);
-}
-
-.header-cv:hover {
-  background: var(--accent-deep);
-}
-
 .nav-toggle {
   position: relative;
   display: none;
@@ -987,6 +938,14 @@ p {
    Metrics
    ========================================================================= */
 
+/* The strip closes the hero rather than opening a section of its own, so it
+   keeps the hero's tighter lead-in but still owes the trailing half of the
+   section rhythm. Without it the gap before the next heading is half of every
+   other gap on the page. */
+.metrics-band {
+  padding-bottom: var(--section-y);
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1168,120 +1127,266 @@ p {
 }
 
 /* =========================================================================
-   Timeline
+   Approach - the method as a BPMN process
    ========================================================================= */
 
-.timeline-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 1.875rem;
+.bpmn {
+  padding: 1.625rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 24px 60px -34px rgb(var(--shadow) / var(--shadow-a));
 }
 
-.timeline-arc {
+.bpmn__head {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex: none;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.timeline-arc svg {
-  flex: none;
-  opacity: 0.75;
+.bpmn__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-mono-xs);
+  font-weight: 500;
+  color: var(--ink-3);
 }
 
-.timeline-head h2 {
-  font-size: var(--fs-xl);
-  font-weight: 600;
-  letter-spacing: -0.028em;
-}
-
-.timeline {
+.bpmn__hint i {
   position: relative;
-  padding-top: 1.5rem;
-  list-style: none;
-}
-
-.timeline__rail {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  border-radius: 1px;
-  transform-origin: left center;
-  background: linear-gradient(90deg, var(--accent), var(--route));
-}
-
-.timeline__list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: auto auto auto auto;
-  gap: 0.5rem 1rem;
-  list-style: none;
-}
-
-/* Each entry spans the same four rows - marker, period, role, company - so
-   those sit on shared baselines without any column reserving blank space for
-   a wrap that may never happen. */
-.timeline__item {
-  display: grid;
-  grid-row: span 4;
-  grid-template-rows: subgrid;
-  gap: 0.5rem;
-}
-
-/* the 2px rail sits at top: 0, so its centre line is at 1px; the 10px marker is
-   pulled up by 28px (24px of padding + 5px of its own radius - that 1px) so the
-   two centres coincide exactly */
-.timeline__item::before {
-  position: relative;
-  z-index: 1;
+  top: 0.08em;
   display: block;
-  width: 10px;
-  height: 10px;
-  margin-top: -1.75rem;
+  width: 5px;
+  height: 5px;
+  flex: none;
   border-radius: 50%;
-  background: var(--marker);
-  box-shadow: 0 0 0 4px var(--paper);
-  content: "";
-}
-
-.timeline__item:first-child::before {
   background: var(--accent);
 }
 
-.timeline__item time {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
+.bpmn__diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bpmn__diagram--narrow {
+  display: none;
+}
+
+/* --- model elements --- */
+
+.bpmn__flow {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__arrow {
+  fill: var(--marker);
+}
+
+.bpmn__event {
+  fill: var(--card);
+  stroke: var(--marker);
+  stroke-width: 1.75;
+}
+
+.bpmn__event--end {
+  stroke-width: 3.5;
+}
+
+.bpmn__task {
+  fill: var(--card-soft);
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__verb {
+  fill: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--ink-3);
 }
 
-.timeline__item:first-child time {
-  color: var(--accent);
+/* the user-task marker in the corner of every task */
+.bpmn__glyph {
+  fill: none;
+  stroke: var(--ink-3);
+  stroke-linecap: round;
+  stroke-width: 1.5;
 }
 
-.timeline__role {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
+.bpmn__gateway {
+  fill: var(--card);
+  stroke: var(--marker);
+  stroke-width: 1.75;
 }
 
-.timeline__company {
+.bpmn__gateway-mark {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-linecap: round;
+  stroke-width: 2.25;
+}
+
+.bpmn__assoc {
+  fill: none;
+  stroke: var(--marker);
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+
+.bpmn__data {
+  fill: var(--card-soft);
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__fold {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__meta {
+  fill: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.bpmn__token {
+  fill: var(--accent);
+  opacity: 0;
+  offset-rotate: 0deg;
+}
+
+/* --- the copy under each task --- */
+
+.bpmn__stations {
+  display: grid;
+  /* tracks and gutter are measured off the model itself, so each column stays
+     centred on its task; the third track is the gap the gateway sits in */
+  grid-template-columns: var(--tracks);
+  gap: 0;
+  padding: 0 var(--gutter);
+  list-style: none;
+}
+
+.bpmn__station:nth-child(3) {
+  grid-column: 4;
+}
+
+.bpmn__station:nth-child(4) {
+  grid-column: 5;
+}
+
+/* the air between columns is padding rather than gap: a gap would pull the
+   outer column centres inward, off the tasks they sit under */
+.bpmn__station {
+  padding: 0 0.75rem;
+  text-align: center;
+}
+
+/* the diagram already names each task, so the heading only needs to be here
+   for assistive technology until the stations stack */
+.bpmn__station h3 {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.bpmn__station p {
   color: var(--ink-2);
-  font-size: 0.8125rem;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
 }
 
-.timeline__detail {
-  margin-top: 0.125rem;
-  color: var(--ink-3);
-  font-size: var(--fs-sm);
-  line-height: 1.5;
+/*
+  A token executes the model once the diagram is in view: it travels the
+  sequence flows and dwells inside each task. `bpmn-token` is the master
+  timeline - every element's highlight is the same 9s cycle delayed to the
+  moment the token reaches it, so the ACTIVE table in MethodProcess.astro and
+  these keyframes have to be edited together.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .bpmn.is-visible .bpmn__token {
+    animation: bpmn-token 9s linear infinite;
+  }
+
+  .bpmn.is-visible .bpmn__task,
+  .bpmn.is-visible .bpmn__data,
+  .bpmn.is-visible .bpmn__gateway {
+    animation:
+      bpmn-stroke 9s linear infinite,
+      bpmn-fill 9s linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  .bpmn.is-visible .bpmn__event {
+    animation: bpmn-stroke 9s linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  .bpmn.is-visible .bpmn__assoc,
+  .bpmn.is-visible .bpmn__fold {
+    animation: bpmn-stroke 9s linear infinite;
+    animation-delay: var(--delay);
+  }
+}
+
+@keyframes bpmn-token {
+  0%,
+  4% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  6% { opacity: 1; }
+  11% { offset-distance: 13.1%; }
+  20% { offset-distance: 13.1%; }
+  29% { offset-distance: 34.1%; }
+  38% { offset-distance: 34.1%; }
+  45% { offset-distance: 50%; }
+  52% { offset-distance: 50%; }
+  60% { offset-distance: 65.9%; }
+  69% { offset-distance: 65.9%; }
+  79% { offset-distance: 86.9%; }
+  88% { offset-distance: 86.9%; }
+  95% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes bpmn-stroke {
+  0% { stroke: var(--marker); }
+  3%,
+  11% { stroke: var(--accent); }
+  15%,
+  100% { stroke: var(--marker); }
+}
+
+@keyframes bpmn-fill {
+  0% { fill: var(--card-soft); }
+  3%,
+  11% { fill: var(--accent-tint); }
+  15%,
+  100% { fill: var(--card-soft); }
 }
 
 /* =========================================================================
@@ -1639,33 +1744,17 @@ p {
 }
 
 .js .metrics > :nth-child(2),
-.js .credentials > :nth-child(2),
-.js .timeline__list > :nth-child(2) {
+.js .credentials > :nth-child(2) {
   transition-delay: 80ms;
 }
 
 .js .metrics > :nth-child(3),
-.js .credentials > :nth-child(3),
-.js .timeline__list > :nth-child(3) {
+.js .credentials > :nth-child(3) {
   transition-delay: 160ms;
 }
 
-.js .metrics > :nth-child(4),
-.js .timeline__list > :nth-child(4) {
+.js .metrics > :nth-child(4) {
   transition-delay: 240ms;
-}
-
-.js .timeline__list > :nth-child(5) {
-  transition-delay: 320ms;
-}
-
-.js .timeline__rail {
-  transform: scaleX(0);
-  transition: transform 1400ms var(--ease-out) 200ms;
-}
-
-.js .timeline.is-visible .timeline__rail {
-  transform: none;
 }
 
 /* =========================================================================
@@ -1692,61 +1781,14 @@ p {
     gap: 1.25rem;
   }
 
-  /* below the desktop breakpoint the sequence reads down the page instead of
-     across it: the rail turns vertical and the markers sit on it */
-  .timeline {
-    padding-top: 0;
-    padding-left: 1.75rem;
-  }
-
-  .timeline__rail {
-    top: 0.45rem;
-    right: auto;
-    bottom: 0.45rem;
-    left: 4px;
-    width: 2px;
-    height: auto;
-    border-radius: 1px;
-    background: linear-gradient(180deg, var(--accent), var(--route));
-  }
-
-  .timeline__list {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: none;
-    gap: 1.75rem;
-  }
-
-  .timeline__item {
-    position: relative;
-    display: flex;
-    grid-row: auto;
-    flex-direction: column;
-    grid-template-rows: none;
-    gap: 0.3rem;
-  }
-
-  .timeline__item::before {
-    position: absolute;
-    top: 0.35rem;
-    left: -1.75rem;
-    margin-top: 0;
-  }
-
-  /* the rail now draws downwards */
-  .js .timeline__rail {
-    transform: scaleY(0);
-    transform-origin: top center;
-  }
-
-  .js .timeline.is-visible .timeline__rail {
-    transform: none;
+  .bpmn__stations {
+    gap: 0 1rem;
   }
 }
 
 @media (max-width: 58rem) {
   .primary-nav,
-  .status-chip,
-  .header-cv {
+  .status-chip {
     display: none;
   }
 
@@ -1784,14 +1826,12 @@ p {
     display: none;
   }
 
-  .timeline-head,
   .vocab__head {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .timeline-head .label,
   .vocab__head .label {
     order: -1;
   }
@@ -1830,8 +1870,55 @@ p {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .timeline__role {
-    min-height: 0;
+  .bpmn {
+    padding: 1.125rem;
+  }
+
+  .bpmn__head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* the left-to-right model cannot stay readable in a phone column, so the
+     process runs top to bottom instead and the tasks repeat underneath as a
+     key to the model */
+  .bpmn__diagram--wide {
+    display: none;
+  }
+
+  .bpmn__diagram--narrow {
+    display: block;
+    margin-inline: auto;
+    max-width: 21.25rem;
+  }
+
+  .bpmn__stations {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: 0;
+    margin-top: 1.25rem;
+  }
+
+  .bpmn__station,
+  .bpmn__station:nth-child(3),
+  .bpmn__station:nth-child(4) {
+    grid-column: auto;
+    padding: 0;
+    text-align: left;
+  }
+
+  .bpmn__station h3 {
+    position: static;
+    overflow: visible;
+    width: auto;
+    height: auto;
+    margin: 0 0 0.375rem;
+    clip-path: none;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: normal;
   }
 
   .hero__actions .button,
@@ -1914,13 +2001,13 @@ p {
     transform: none;
   }
 
-  .js .timeline__rail {
-    transform: none;
-  }
-
   .board__led,
   .board__phases i::before {
     transform: scaleX(1);
+  }
+
+  .bpmn__token {
+    display: none;
   }
 
   .board__dot {

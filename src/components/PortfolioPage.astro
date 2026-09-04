@@ -1,10 +1,10 @@
 ---
 import DecisionBoard from "./DecisionBoard.astro";
+import MethodProcess from "./MethodProcess.astro";
 import SiteFooter from "./SiteFooter.astro";
 import SiteHeader from "./SiteHeader.astro";
 import {
   careerStart,
-  cvUrls,
   emailAddress,
   linkedInUrl,
   type Locale,
@@ -18,10 +18,9 @@ interface Props {
 
 const { locale, content } = Astro.props;
 const emailUrl = `mailto:${emailAddress}`;
-const cvUrl = cvUrls[locale];
 
 const years = new Date().getFullYear() - careerStart;
-const roles = content.journey.roles.length;
+const roles = content.metrics.roles.value;
 const languages = content.depth.languages.length;
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -45,12 +44,7 @@ const vocabRows = [content.approach.tools, rotate(content.approach.tools, 6)];
       <p class="hero__intro">{content.hero.intro}</p>
       <div class="hero__actions">
         <a class="button button--primary" href="#work">{content.hero.workCta}</a>
-        <a class="button button--ghost" href={cvUrl} download>
-          {content.hero.cvCta}
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 4v12"></path><path d="M6 13l6 6 6-6"></path>
-          </svg>
-        </a>
+        <a class="button button--ghost" href="#contact">{content.contact.emailCta}</a>
       </div>
       <ul class="hero__meta" role="list">
         {content.hero.meta.map((item) => <li>{item}</li>)}
@@ -61,7 +55,7 @@ const vocabRows = [content.approach.tools, rotate(content.approach.tools, 6)];
   </section>
 
   <!-- metrics -->
-  <section class="shell" aria-label={locale === "de" ? "Berufliche Eckdaten" : "Professional facts"}>
+  <section class="metrics-band shell" aria-label={locale === "de" ? "Berufliche Eckdaten" : "Professional facts"}>
     <ol class="metrics" role="list">
       <li class="metric" data-reveal>
         <p class="label">{content.metrics.years.label}</p>
@@ -119,31 +113,16 @@ const vocabRows = [content.approach.tools, rotate(content.approach.tools, 6)];
     </ol>
   </section>
 
-  <!-- journey -->
-  <section class="section shell" id="journey" aria-labelledby="journey-title">
-    <header class="timeline-head" data-reveal>
-      <h2 id="journey-title">{content.journey.title}</h2>
-      <p class="label timeline-arc" aria-hidden="true">
-        <span>code</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg>
-        <span>clarity</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg>
-        <span>product</span>
-      </p>
+  <!-- approach -->
+  <section class="section shell" id="approach" aria-labelledby="approach-title">
+    <header class="section-heading" data-reveal>
+      <div>
+        <h2 id="approach-title">{content.approach.title}</h2>
+        <p>{content.approach.intro}</p>
+      </div>
     </header>
 
-    <div class="timeline" data-timeline>
-      <div class="timeline__rail" aria-hidden="true"></div>
-      <ol class="timeline__list" role="list">
-        {content.journey.roles.map((role) => (
-          <li class="timeline__item" data-reveal>
-            <time>{role.period}</time>
-            <h3 class="timeline__role">{role.role}</h3>
-            <p class="timeline__company">{role.company}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
+    <MethodProcess content={content.approach} />
   </section>
 
   <!-- credentials -->
@@ -224,7 +203,7 @@ const vocabRows = [content.approach.tools, rotate(content.approach.tools, 6)];
 
   /* one observer drives every reveal, the board, the rail and the ticker */
   const targets = document.querySelectorAll<HTMLElement>(
-    "[data-reveal], [data-board], [data-timeline], [data-vocab]"
+    "[data-reveal], [data-board], [data-process], [data-vocab]"
   );
 
   if (reduced || !("IntersectionObserver" in window)) {

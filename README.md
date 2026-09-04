@@ -31,7 +31,6 @@ English is served at `/` and German at `/de/`.
 | `src/components/` | Page shell, header, footer and `DecisionBoard.astro` — the animated hero diagram. |
 | `src/pages/` | `/`, `/de/`, `/impressum/`, `/datenschutz/`, `404`. |
 | `public/og-image.svg` | Source of the social share image; fonts are embedded so it rasterises exactly. |
-| `public/anna-spiechowicz-cv-*.pdf` | One CV per language; `cvUrls` in `site.ts` picks by locale. |
 | `vercel.json` | Trailing-slash behaviour, asset caching and security headers. |
 
 To restyle the site, change the custom properties in the `:root` block at the top of
@@ -40,17 +39,17 @@ diagram included.
 
 ## Theme
 
-Light and dark are both hand-tuned; the header carries a three-way switch
-(light / dark / system). "System" is the default and simply follows
-`prefers-color-scheme`, so the site is themed correctly with JavaScript
-disabled. An explicit choice is stored in `localStorage` under `theme` and
-applied by a small inline script in `<head>`, before first paint, so a chosen
-theme never flashes the other one on load.
+Light and dark are both hand-tuned; the header carries a two-way switch.
+**Light is the default and the site does not follow `prefers-color-scheme`** —
+a visitor whose system is set to dark still gets the light page until they ask
+for dark. That is deliberate: following the system preference meant most
+visitors landed on the dark theme without ever choosing it.
 
-Dark values are defined once in `global.css` and applied twice — under the
-media query for system-dark visitors who have not chosen, and under
-`:root[data-theme="dark"]` for an explicit choice. Keep those two lists
-identical.
+Dark is therefore only ever an explicit choice. It is stored in `localStorage`
+under `theme`, defined once in `global.css` under `:root[data-theme="dark"]`,
+and applied by a small inline script in `<head>` before first paint so a chosen
+dark theme never flashes light on load. With JavaScript disabled the page is
+light.
 
 ## Motion
 
@@ -60,17 +59,14 @@ when a section scrolls into view, and switched off entirely under
 
 - the decision board's signals travel their routes while each input's LED strip charges
 - the metric numbers count up the first time they are seen
-- the timeline rail draws itself left to right
 - the working-vocabulary rows drift in opposite directions
 
-`--years` and the role count are computed from `careerStart` in `src/data/site.ts` and the
-length of the journey list, so they stay correct without being edited.
+`--years` is computed from `careerStart` in `src/data/site.ts`, so it stays correct without
+being edited.
 
 ## Launch checklist
 
 - Anna reviews and approves the English and German copy.
-- Anna reviews both public CVs before each deploy. Both currently include her phone
-  number and street address, so treat them as fully public documents.
 - Anna or a qualified adviser reviews the Impressum and privacy notice.
 - The Vercel project uses `npm run build`, publishes `dist`, and installs with npm
   (`npm ci`), not yarn. Node is pinned to 22.x by `engines` and `.nvmrc`.

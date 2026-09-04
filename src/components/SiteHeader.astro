@@ -1,5 +1,5 @@
 ---
-import { alternatePath, cvUrls, type Locale, type SiteContent } from "../data/site";
+import { alternatePath, type Locale, type SiteContent } from "../data/site";
 
 interface Props {
   locale: Locale;
@@ -7,11 +7,10 @@ interface Props {
 }
 
 const { locale, content } = Astro.props;
-const cvUrl = cvUrls[locale];
 
 const links = [
   { href: "#work", label: content.navigation.work },
-  { href: "#journey", label: content.navigation.journey },
+  { href: "#approach", label: content.navigation.approach },
   { href: "#credentials", label: content.navigation.credentials },
   { href: "#contact", label: content.navigation.contact }
 ];
@@ -38,16 +37,12 @@ const links = [
         <button type="button" data-theme-value="dark" aria-pressed="false" aria-label={content.navigation.theme.dark} title={content.navigation.theme.dark}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
         </button>
-        <button type="button" data-theme-value="system" aria-pressed="false" aria-label={content.navigation.theme.system} title={content.navigation.theme.system}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
-        </button>
       </div>
       <a class="language-link" href={alternatePath(locale)} aria-label={content.navigation.languageLabel}>
         <span class:list={{ active: locale === "en" }}>EN</span>
         <span aria-hidden="true">/</span>
         <span class:list={{ active: locale === "de" }}>DE</span>
       </a>
-      <a class="header-cv" href={cvUrl} download>{content.navigation.cv}</a>
       <button
         class="nav-toggle"
         type="button"
@@ -74,10 +69,6 @@ const links = [
         <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
       </a>
     ))}
-    <a href={cvUrl} download>
-      {content.navigation.cv}
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"></path><path d="M6 13l6 6 6-6"></path></svg>
-    </a>
   </nav>
 </header>
 
@@ -87,12 +78,12 @@ const links = [
   const KEY = "theme";
   const switcher = document.querySelector<HTMLElement>("[data-theme-switch]");
 
+  /* light is the default: the site never follows the system preference */
   const readTheme = () => {
     try {
-      const v = localStorage.getItem(KEY);
-      return v === "light" || v === "dark" ? v : "system";
+      return localStorage.getItem(KEY) === "dark" ? "dark" : "light";
     } catch {
-      return "system";
+      return "light";
     }
   };
 
@@ -108,25 +99,16 @@ const links = [
     switcher.addEventListener("click", (event) => {
       const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-theme-value]");
       if (!button) return;
-      const value = button.dataset.themeValue ?? "system";
+      const value = button.dataset.themeValue === "dark" ? "dark" : "light";
 
-      if (value === "system") {
-        document.documentElement.removeAttribute("data-theme");
-      } else {
-        document.documentElement.setAttribute("data-theme", value);
-      }
+      document.documentElement.setAttribute("data-theme", value);
 
       const existing = document.getElementById("theme-color-choice");
-      if (value === "system") {
-        existing?.remove();
-      } else {
-        const meta = existing ?? document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color", id: "theme-color-choice" }));
-        meta.setAttribute("content", value === "dark" ? "#0b1017" : "#ffffff");
-      }
+      const meta = existing ?? document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color", id: "theme-color-choice" }));
+      meta.setAttribute("content", value === "dark" ? "#0b1017" : "#ffffff");
 
       try {
-        if (value === "system") localStorage.removeItem(KEY);
-        else localStorage.setItem(KEY, value);
+        localStorage.setItem(KEY, value);
       } catch {
         /* private mode: the choice simply does not outlive the tab */
       }

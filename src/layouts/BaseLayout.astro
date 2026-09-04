@@ -29,10 +29,6 @@ const personSchema = {
     addressRegion: "Hesse",
     addressCountry: "DE"
   },
-  worksFor: {
-    "@type": "Organization",
-    name: "equensWorldline SE Germany"
-  },
   alumniOf: [
     {
       "@type": "CollegeOrUniversity",
@@ -56,8 +52,7 @@ const personSchema = {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0b1017" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonicalUrl} />
     {englishUrl && <link rel="alternate" hreflang="en" href={englishUrl} />}
     {germanUrl && <link rel="alternate" hreflang="de" href={germanUrl} />}
@@ -84,19 +79,19 @@ const personSchema = {
     {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
     <script is:inline>
       document.documentElement.classList.add("js");
-      /* runs before first paint so a stored choice never flashes the other theme */
+      /* Light is the default, so only a stored dark choice needs applying - and
+         it has to land before first paint or the page flashes light first. */
       try {
-        var t = localStorage.getItem("theme");
-        if (t === "light" || t === "dark") {
-          document.documentElement.setAttribute("data-theme", t);
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
           var m = document.createElement("meta");
           m.name = "theme-color";
           m.id = "theme-color-choice";
-          m.content = t === "dark" ? "#0b1017" : "#ffffff";
+          m.content = "#0b1017";
           document.head.appendChild(m);
         }
       } catch (e) {
-        /* storage blocked: fall back to the system preference */
+        /* storage blocked: the page stays light, which is the default */
       }
     </script>
   </head>
