@@ -63,41 +63,9 @@
   font-synthesis: none;
 }
 
-/* Dark tokens live in one place and are applied twice: once for visitors whose
-   system asks for dark and who have not chosen otherwise, and once for an
-   explicit choice from the theme switch. Keep the two lists identical. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0b1017;
-    --card: #121a26;
-    --card-soft: #18222f;
-    --band: #1b2635;
-    --track: #243146;
-
-    --ink: #e9eef6;
-    --ink-2: #a6b3c6;
-    --ink-3: #8593a8;
-
-    --line: #212d3d;
-    --line-soft: #1a2430;
-    --line-strong: #33455e;
-    --hairline: #2a3749;
-    --route: #2f3f56;
-    --marker: #4a5b73;
-    --row-hover: #18222f;
-    --chip: #18222f;
-
-    /* shadows read as depth on paper and as noise on a dark ground */
-    --shadow: 0 0 0;
-    --shadow-a: 55%;
-    --shadow-b: 45%;
-
-    --accent: #6f96ff;
-    --accent-deep: #9ab6ff;
-    --on-accent: #08101d;
-  }
-}
-
+/* Dark is only ever an explicit choice from the theme switch. The site does not
+   follow prefers-color-scheme: a visitor whose system is dark still gets the
+   light page until they ask for dark. */
 :root[data-theme="dark"] {
     --paper: #0b1017;
     --card: #121a26;
@@ -969,6 +937,14 @@ p {
 /* =========================================================================
    Metrics
    ========================================================================= */
+
+/* The strip closes the hero rather than opening a section of its own, so it
+   keeps the hero's tighter lead-in but still owes the trailing half of the
+   section rhythm. Without it the gap before the next heading is half of every
+   other gap on the page. */
+.metrics-band {
+  padding-bottom: var(--section-y);
+}
 
 .metrics {
   display: grid;
