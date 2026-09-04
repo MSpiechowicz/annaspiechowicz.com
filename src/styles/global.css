@@ -1151,10 +1151,10 @@ p {
 }
 
 /* =========================================================================
-   Approach
+   Approach - the method as a BPMN process
    ========================================================================= */
 
-.flow {
+.bpmn {
   padding: 1.625rem;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -1162,7 +1162,7 @@ p {
   box-shadow: 0 24px 60px -34px rgb(var(--shadow) / var(--shadow-a));
 }
 
-.flow__head {
+.bpmn__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1170,7 +1170,7 @@ p {
   margin-bottom: 0.5rem;
 }
 
-.flow__hint {
+.bpmn__hint {
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -1179,7 +1179,7 @@ p {
   color: var(--ink-3);
 }
 
-.flow__hint i {
+.bpmn__hint i {
   position: relative;
   top: 0.08em;
   display: block;
@@ -1190,128 +1190,214 @@ p {
   background: var(--accent);
 }
 
-.flow__graphic {
+.bpmn__diagram {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.flow__graphic--narrow {
+.bpmn__diagram--narrow {
   display: none;
 }
 
-.flow__guide {
-  stroke: var(--line);
-  stroke-width: 1.25;
+/* --- model elements --- */
+
+.bpmn__flow {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__arrow {
+  fill: var(--marker);
+}
+
+.bpmn__event {
+  fill: var(--card);
+  stroke: var(--marker);
+  stroke-width: 1.75;
+}
+
+.bpmn__event--end {
+  stroke-width: 3.5;
+}
+
+.bpmn__task {
+  fill: var(--card-soft);
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__verb {
+  fill: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* the user-task marker in the corner of every task */
+.bpmn__glyph {
+  fill: none;
+  stroke: var(--ink-3);
   stroke-linecap: round;
+  stroke-width: 1.5;
 }
 
-.flow__dot {
-  opacity: var(--o);
+.bpmn__gateway {
+  fill: var(--card);
+  stroke: var(--marker);
+  stroke-width: 1.75;
 }
 
-/* the four verbs sit under the four stations the field passes through, so the
-   row reads as part of the graphic rather than as a second set of cards */
-.flow__steps {
+.bpmn__gateway-mark {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-linecap: round;
+  stroke-width: 2.25;
+}
+
+.bpmn__assoc {
+  fill: none;
+  stroke: var(--marker);
+  stroke-dasharray: 2 4;
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+
+.bpmn__data {
+  fill: var(--card-soft);
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__fold {
+  fill: none;
+  stroke: var(--marker);
+  stroke-width: 1.5;
+}
+
+.bpmn__meta {
+  fill: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.bpmn__token {
+  fill: var(--accent);
+  opacity: 0;
+  offset-rotate: 0deg;
+}
+
+/* --- the copy under each task --- */
+
+.bpmn__stations {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem 1.25rem;
-  margin-top: 0.625rem;
-  padding-top: 1.125rem;
-  border-top: 1px solid var(--line-soft);
+  gap: 0 1.5rem;
+  margin-top: 0.5rem;
   list-style: none;
 }
 
-.flow__step {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.bpmn__station {
+  text-align: center;
 }
 
-.flow__tick {
-  display: block;
+/* the diagram already names each task, so the heading only needs to be here
+   for assistive technology until the stations stack */
+.bpmn__station h3 {
+  position: absolute;
   overflow: hidden;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--track);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.flow__tick i {
-  display: block;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--accent);
-  content: "";
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-
-.flow__step:nth-child(2) .flow__tick i {
-  background: color-mix(in oklab, var(--accent) 78%, var(--card));
-}
-
-.flow__step:nth-child(3) .flow__tick i {
-  background: color-mix(in oklab, var(--accent) 56%, var(--card));
-}
-
-.flow__step:nth-child(4) .flow__tick i {
-  background: color-mix(in oklab, var(--accent) 34%, var(--card));
-}
-
-.flow__step h3 {
-  font-size: var(--fs-md);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.flow__step p {
+.bpmn__station p {
   color: var(--ink-2);
   font-size: var(--fs-sm);
   line-height: 1.55;
 }
 
-/* the dots settle from their scatter, column by column */
-.js .flow__dot {
-  opacity: 0;
-  transform: translate(var(--dx), var(--dy));
-}
-
-.js .flow.is-visible .flow__dot {
-  opacity: var(--o);
-  transform: none;
-}
-
+/*
+  A token executes the model once the diagram is in view: it travels the
+  sequence flows and dwells inside each task. `bpmn-token` is the master
+  timeline - every element's highlight is the same 9s cycle delayed to the
+  moment the token reaches it, so the ACTIVE table in MethodProcess.astro and
+  these keyframes have to be edited together.
+*/
 @media (prefers-reduced-motion: no-preference) {
-  .js .flow__dot {
-    transition:
-      opacity 620ms var(--ease-out),
-      transform 900ms var(--ease-out);
-    transition-delay: var(--delay);
+  .bpmn.is-visible .bpmn__token {
+    animation: bpmn-token 9s linear infinite;
   }
 
-  .flow.is-visible .flow__tick i {
-    animation: segfill 900ms var(--ease-out) both;
+  .bpmn.is-visible .bpmn__task,
+  .bpmn.is-visible .bpmn__data,
+  .bpmn.is-visible .bpmn__gateway {
+    animation:
+      bpmn-stroke 9s linear infinite,
+      bpmn-fill 9s linear infinite;
+    animation-delay: var(--delay);
   }
 
-  .flow.is-visible .flow__step:nth-child(1) .flow__tick i {
-    animation-delay: 300ms;
+  .bpmn.is-visible .bpmn__event {
+    animation: bpmn-stroke 9s linear infinite;
+    animation-delay: var(--delay);
   }
 
-  .flow.is-visible .flow__step:nth-child(2) .flow__tick i {
-    animation-delay: 520ms;
-  }
-
-  .flow.is-visible .flow__step:nth-child(3) .flow__tick i {
-    animation-delay: 740ms;
-  }
-
-  .flow.is-visible .flow__step:nth-child(4) .flow__tick i {
-    animation-delay: 960ms;
+  .bpmn.is-visible .bpmn__assoc,
+  .bpmn.is-visible .bpmn__fold {
+    animation: bpmn-stroke 9s linear infinite;
+    animation-delay: var(--delay);
   }
 }
 
-.flow:not(.is-visible) .flow__tick i {
-  transform: scaleX(1);
+@keyframes bpmn-token {
+  0%,
+  4% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  6% { opacity: 1; }
+  11% { offset-distance: 9.6%; }
+  20% { offset-distance: 9.6%; }
+  29% { offset-distance: 36.5%; }
+  38% { offset-distance: 36.5%; }
+  45% { offset-distance: 50%; }
+  52% { offset-distance: 50%; }
+  60% { offset-distance: 63.5%; }
+  69% { offset-distance: 63.5%; }
+  79% { offset-distance: 90.4%; }
+  88% { offset-distance: 90.4%; }
+  95% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes bpmn-stroke {
+  0% { stroke: var(--marker); }
+  3%,
+  11% { stroke: var(--accent); }
+  15%,
+  100% { stroke: var(--marker); }
+}
+
+@keyframes bpmn-fill {
+  0% { fill: var(--card-soft); }
+  3%,
+  11% { fill: var(--accent-tint); }
+  15%,
+  100% { fill: var(--card-soft); }
 }
 
 /* =========================================================================
@@ -1706,9 +1792,8 @@ p {
     gap: 1.25rem;
   }
 
-  .flow__steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
+  .bpmn__stations {
+    gap: 0 1rem;
   }
 }
 
@@ -1792,27 +1877,54 @@ p {
     --shell: min(100% - 2.5rem, 79rem);
   }
 
-  .metrics,
-  .flow__steps {
+  .metrics {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .flow {
+  .bpmn {
     padding: 1.125rem;
   }
 
-  .flow__head {
+  .bpmn__head {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .flow__graphic--wide {
+  /* the left-to-right model cannot stay readable in a phone column, so the
+     process runs top to bottom instead and the tasks repeat underneath as a
+     key to the model */
+  .bpmn__diagram--wide {
     display: none;
   }
 
-  .flow__graphic--narrow {
+  .bpmn__diagram--narrow {
     display: block;
+    margin-inline: auto;
+    max-width: 21.25rem;
+  }
+
+  .bpmn__stations {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .bpmn__station {
+    text-align: left;
+  }
+
+  .bpmn__station h3 {
+    position: static;
+    overflow: visible;
+    width: auto;
+    height: auto;
+    margin: 0 0 0.375rem;
+    clip-path: none;
+    font-size: var(--fs-md);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: normal;
   }
 
   .hero__actions .button,
@@ -1896,14 +2008,12 @@ p {
   }
 
   .board__led,
-  .board__phases i::before,
-  .flow__tick i {
+  .board__phases i::before {
     transform: scaleX(1);
   }
 
-  .js .flow__dot {
-    opacity: var(--o);
-    transform: none;
+  .bpmn__token {
+    display: none;
   }
 
   .board__dot {
