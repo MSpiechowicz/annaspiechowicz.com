@@ -56,7 +56,8 @@ const personSchema = {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1017" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonicalUrl} />
     {englishUrl && <link rel="alternate" hreflang="en" href={englishUrl} />}
     {germanUrl && <link rel="alternate" hreflang="de" href={germanUrl} />}
