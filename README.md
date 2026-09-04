@@ -33,7 +33,6 @@ English is served at `/` and German at `/de/`.
 | `public/og-image.svg` | Source of the social share image; fonts are embedded so it rasterises exactly. |
 | `public/anna-spiechowicz-cv-*.pdf` | One CV per language; `cvUrls` in `site.ts` picks by locale. |
 | `vercel.json` | Trailing-slash behaviour, asset caching and security headers. |
-| `netlify.toml` | Only for the Netlify integration still attached to the repo; keep it in step with `vercel.json`. |
 
 To restyle the site, change the custom properties in the `:root` block at the top of
 `global.css`. Everything else reads from them — `--accent` alone re-themes the whole page,

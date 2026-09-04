@@ -149,7 +149,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         "User needs, business value, risk and constraints converge into a decision and a roadmap.",
       boardLabel: "Decision pipeline",
-      boardHint: "4 signals \u2192 1 direction",
+      boardHint: "4 signals, one direction",
       inputs: ["User need", "Business value", "Risk", "Constraint"],
       decision: "Decision",
       output: "Roadmap",
@@ -362,7 +362,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       description:
         "Nutzerbedarf, Geschäftswert, Risiko und Rahmenbedingungen führen zu einer Entscheidung und einer Roadmap.",
       boardLabel: "Entscheidungs-Pipeline",
-      boardHint: "4 Signale \u2192 1 Richtung",
+      boardHint: "4 Signale, eine Richtung",
       inputs: ["Nutzerbedarf", "Geschäftswert", "Risiko", "Rahmen"],
       decision: "Entscheidung",
       output: "Roadmap",
