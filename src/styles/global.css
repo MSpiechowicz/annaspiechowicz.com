@@ -543,23 +543,6 @@ p {
   color: var(--ink);
 }
 
-.header-cv {
-  display: inline-flex;
-  align-items: center;
-  height: 2.375rem;
-  padding: 0 1.125rem;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: var(--on-accent);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  transition: background var(--dur) var(--ease-out);
-}
-
-.header-cv:hover {
-  background: var(--accent-deep);
-}
-
 .nav-toggle {
   position: relative;
   display: none;
@@ -1168,120 +1151,40 @@ p {
 }
 
 /* =========================================================================
-   Timeline
+   Approach
    ========================================================================= */
 
-.timeline-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 1.875rem;
-}
-
-.timeline-arc {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: none;
-}
-
-.timeline-arc svg {
-  flex: none;
-  opacity: 0.75;
-}
-
-.timeline-head h2 {
-  font-size: var(--fs-xl);
-  font-weight: 600;
-  letter-spacing: -0.028em;
-}
-
-.timeline {
-  position: relative;
-  padding-top: 1.5rem;
+.methods {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
   list-style: none;
 }
 
-.timeline__rail {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  border-radius: 1px;
-  transform-origin: left center;
-  background: linear-gradient(90deg, var(--accent), var(--route));
-}
-
-.timeline__list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: auto auto auto auto;
-  gap: 0.5rem 1rem;
-  list-style: none;
-}
-
-/* Each entry spans the same four rows - marker, period, role, company - so
-   those sit on shared baselines without any column reserving blank space for
-   a wrap that may never happen. */
-.timeline__item {
-  display: grid;
-  grid-row: span 4;
-  grid-template-rows: subgrid;
+.method {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--card);
 }
 
-/* the 2px rail sits at top: 0, so its centre line is at 1px; the 10px marker is
-   pulled up by 28px (24px of padding + 5px of its own radius - that 1px) so the
-   two centres coincide exactly */
-.timeline__item::before {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 10px;
-  height: 10px;
-  margin-top: -1.75rem;
-  border-radius: 50%;
-  background: var(--marker);
-  box-shadow: 0 0 0 4px var(--paper);
-  content: "";
-}
-
-.timeline__item:first-child::before {
-  background: var(--accent);
-}
-
-.timeline__item time {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink-3);
-}
-
-.timeline__item:first-child time {
+.method__index {
   color: var(--accent);
 }
 
-.timeline__role {
-  font-size: 0.8125rem;
+.method h3 {
+  font-size: var(--fs-md);
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 
-.timeline__company {
+.method p {
   color: var(--ink-2);
-  font-size: 0.8125rem;
-}
-
-.timeline__detail {
-  margin-top: 0.125rem;
-  color: var(--ink-3);
   font-size: var(--fs-sm);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* =========================================================================
@@ -1640,32 +1543,19 @@ p {
 
 .js .metrics > :nth-child(2),
 .js .credentials > :nth-child(2),
-.js .timeline__list > :nth-child(2) {
+.js .methods > :nth-child(2) {
   transition-delay: 80ms;
 }
 
 .js .metrics > :nth-child(3),
 .js .credentials > :nth-child(3),
-.js .timeline__list > :nth-child(3) {
+.js .methods > :nth-child(3) {
   transition-delay: 160ms;
 }
 
 .js .metrics > :nth-child(4),
-.js .timeline__list > :nth-child(4) {
+.js .methods > :nth-child(4) {
   transition-delay: 240ms;
-}
-
-.js .timeline__list > :nth-child(5) {
-  transition-delay: 320ms;
-}
-
-.js .timeline__rail {
-  transform: scaleX(0);
-  transition: transform 1400ms var(--ease-out) 200ms;
-}
-
-.js .timeline.is-visible .timeline__rail {
-  transform: none;
 }
 
 /* =========================================================================
@@ -1692,61 +1582,14 @@ p {
     gap: 1.25rem;
   }
 
-  /* below the desktop breakpoint the sequence reads down the page instead of
-     across it: the rail turns vertical and the markers sit on it */
-  .timeline {
-    padding-top: 0;
-    padding-left: 1.75rem;
-  }
-
-  .timeline__rail {
-    top: 0.45rem;
-    right: auto;
-    bottom: 0.45rem;
-    left: 4px;
-    width: 2px;
-    height: auto;
-    border-radius: 1px;
-    background: linear-gradient(180deg, var(--accent), var(--route));
-  }
-
-  .timeline__list {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: none;
-    gap: 1.75rem;
-  }
-
-  .timeline__item {
-    position: relative;
-    display: flex;
-    grid-row: auto;
-    flex-direction: column;
-    grid-template-rows: none;
-    gap: 0.3rem;
-  }
-
-  .timeline__item::before {
-    position: absolute;
-    top: 0.35rem;
-    left: -1.75rem;
-    margin-top: 0;
-  }
-
-  /* the rail now draws downwards */
-  .js .timeline__rail {
-    transform: scaleY(0);
-    transform-origin: top center;
-  }
-
-  .js .timeline.is-visible .timeline__rail {
-    transform: none;
+  .methods {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 58rem) {
   .primary-nav,
-  .status-chip,
-  .header-cv {
+  .status-chip {
     display: none;
   }
 
@@ -1784,14 +1627,12 @@ p {
     display: none;
   }
 
-  .timeline-head,
   .vocab__head {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .timeline-head .label,
   .vocab__head .label {
     order: -1;
   }
@@ -1826,12 +1667,9 @@ p {
     --shell: min(100% - 2.5rem, 79rem);
   }
 
-  .metrics {
+  .metrics,
+  .methods {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .timeline__role {
-    min-height: 0;
   }
 
   .hero__actions .button,
@@ -1911,10 +1749,6 @@ p {
 
   .js [data-reveal] {
     opacity: 1;
-    transform: none;
-  }
-
-  .js .timeline__rail {
     transform: none;
   }
 
