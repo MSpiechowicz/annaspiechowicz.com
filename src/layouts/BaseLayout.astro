@@ -82,7 +82,23 @@ const personSchema = {
     <meta name="twitter:image:alt" content="Anna Spiechowicz, Product Owner and Business Analyst" />
     <title>{title}</title>
     {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
-    <script is:inline>document.documentElement.classList.add("js");</script>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      /* runs before first paint so a stored choice never flashes the other theme */
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") {
+          document.documentElement.setAttribute("data-theme", t);
+          var m = document.createElement("meta");
+          m.name = "theme-color";
+          m.id = "theme-color-choice";
+          m.content = t === "dark" ? "#0b1017" : "#ffffff";
+          document.head.appendChild(m);
+        }
+      } catch (e) {
+        /* storage blocked: fall back to the system preference */
+      }
+    </script>
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
