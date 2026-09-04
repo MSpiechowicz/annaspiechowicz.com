@@ -47,7 +47,6 @@ export interface SiteContent {
     certification: { label: string; value: string; detail: string };
   };
   impact: {
-    eyebrow: string;
     title: string;
     intro: string;
     columns: {
@@ -180,7 +179,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       }
     },
     impact: {
-      eyebrow: "Three capabilities",
       title: "Clarity is a product skill.",
       intro:
         "I structure what first looks contradictory until users, business and engineering can act on the same decision.",
@@ -395,7 +393,6 @@ export const siteContent: Record<Locale, SiteContent> = {
       }
     },
     impact: {
-      eyebrow: "Drei Kompetenzen",
       title: "Klarheit ist eine Produktkompetenz.",
       intro:
         "Ich strukturiere, was zunächst widersprüchlich wirkt, bis Nutzer, Business und Entwicklung an derselben Entscheidung arbeiten.",
