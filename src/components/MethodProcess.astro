@@ -1,0 +1,282 @@
+---
+import type { SiteContent } from "../data/site";
+
+interface Props {
+  content: SiteContent["approach"];
+}
+
+const { content } = Astro.props;
+
+/*
+  The four methods drawn as the artefact they actually produce: a BPMN process.
+  A start event, four user tasks with their data objects, an exclusive gateway
+  that sends unclear work back to Listen, and an end event. A token then
+  executes the model - travelling the sequence flows and dwelling in each task
+  while that element highlights.
+
+  Two layouts are generated from the same description: the process runs left to
+  right on a wide column and top to bottom once the stations stack, which is how
+  a model this shape is drawn for a narrow page anyway. Only one is displayed.
+
+  Both layouts place their waypoints at the same fractions of the token's path
+  (9.6 / 36.5 / 50 / 63.5 / 90.4 per cent), so a single `bpmn-token` timeline in
+  global.css drives either one and every element highlight is that timeline
+  delayed to the moment the token arrives. The vertical layout is symmetric
+  about the gateway for exactly that reason. ACTIVE below is the other half of
+  those keyframes: edit the two together.
+*/
+const ACTIVE = {
+  start: 0.3,
+  tasks: [0.9, 2.55, 5.35, 7.05],
+  gateway: 4,
+  end: 8.4
+};
+
+const EVENT_R = 12;
+const GATE = 26; /* half-diagonal of the gateway diamond */
+const DATA_W = 40;
+const DATA_H = 50;
+const FOLD = 12;
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+/* a BPMN data object: a page with its corner turned down */
+const page = ({ x, y }: Point) => ({
+  body: `M${x} ${y} H${x + DATA_W - FOLD} L${x + DATA_W} ${y + FOLD} V${y + DATA_H} H${x} Z`,
+  corner: `M${x + DATA_W - FOLD} ${y} V${y + FOLD} H${x + DATA_W}`
+});
+
+const diamond = ({ x, y }: Point) =>
+  `M${x} ${y - GATE} L${x + GATE} ${y} L${x} ${y + GATE} L${x - GATE} ${y} Z`;
+
+const cross = ({ x, y }: Point) => `M${x - 8} ${y - 8} l16 16 M${x + 8} ${y - 8} l-16 16`;
+
+const wide = (() => {
+  const w = 146;
+  const h = 72;
+  const top = 70;
+  const mid = 106;
+  const cols = [125, 375, 625, 875];
+  const gate = { x: 500, y: mid };
+  const startX = 24;
+  const endX = 976;
+  const dataTop = 184;
+  const left = (c: number) => c - w / 2;
+  const right = (c: number) => c + w / 2;
+
+  return {
+    key: "wide",
+    viewBox: "0 0 1000 276",
+    start: { at: { x: startX, y: mid }, label: { x: startX - 16, y: mid + 62, anchor: "start" } },
+    end: { at: { x: endX, y: mid }, label: { x: endX + 16, y: mid + 62, anchor: "end" } },
+    gateway: {
+      at: gate,
+      label: { x: gate.x, y: mid + 62, anchor: "middle" }
+    },
+    loop: `M${gate.x} ${mid - GATE} V24 H${cols[0]} V${top}`,
+    loopLabel: { x: (gate.x + cols[0]) / 2, y: 16, anchor: "middle", rotate: 0 },
+    flows: [
+      `M${startX + EVENT_R} ${mid} H${left(cols[0])}`,
+      `M${right(cols[0])} ${mid} H${left(cols[1])}`,
+      `M${right(cols[1])} ${mid} H${gate.x - GATE}`,
+      `M${gate.x + GATE} ${mid} H${left(cols[2])}`,
+      `M${right(cols[2])} ${mid} H${left(cols[3])}`,
+      `M${right(cols[3])} ${mid} H${endX - EVENT_R}`
+    ],
+    token: `M${startX + EVENT_R} ${mid} L${endX - EVENT_R} ${mid}`,
+    tasks: cols.map((c) => ({
+      rect: { x: left(c), y: top, w, h },
+      verb: { x: c, y: mid + 8 },
+      glyph: { x: left(c) + 11, y: top + 11 },
+      assoc: `M${c} ${top + h} V${dataTop}`,
+      data: { x: c - DATA_W / 2, y: dataTop },
+      dataLabel: { x: c, y: dataTop + DATA_H + 18, anchor: "middle" }
+    }))
+  };
+})();
+
+const narrow = (() => {
+  const w = 150;
+  const h = 56;
+  const axis = 130;
+  /* symmetric about the gateway, so the token fractions match the wide layout */
+  const rows = [91, 227, 363, 499];
+  const gate = { x: axis, y: 295 };
+  const startY = 30;
+  const endY = 560;
+  const dataX = 248;
+  const rail = 22;
+  const top = (c: number) => c - h / 2;
+  const bottom = (c: number) => c + h / 2;
+
+  return {
+    key: "narrow",
+    viewBox: "0 0 340 600",
+    start: { at: { x: axis, y: startY }, label: { x: axis + 20, y: startY + 4, anchor: "start" } },
+    end: { at: { x: axis, y: endY }, label: { x: axis + 20, y: endY + 4, anchor: "start" } },
+    gateway: {
+      at: gate,
+      label: { x: gate.x + 36, y: gate.y + 5, anchor: "start" }
+    },
+    loop: `M${gate.x - GATE} ${gate.y} H${rail} V${rows[0]} H${axis - w / 2}`,
+    loopLabel: { x: 14, y: (rows[0] + gate.y) / 2, anchor: "middle", rotate: -90 },
+    flows: [
+      `M${axis} ${startY + EVENT_R} V${top(rows[0])}`,
+      `M${axis} ${bottom(rows[0])} V${top(rows[1])}`,
+      `M${axis} ${bottom(rows[1])} V${gate.y - GATE}`,
+      `M${axis} ${gate.y + GATE} V${top(rows[2])}`,
+      `M${axis} ${bottom(rows[2])} V${top(rows[3])}`,
+      `M${axis} ${bottom(rows[3])} V${endY - EVENT_R}`
+    ],
+    token: `M${axis} ${startY + EVENT_R} L${axis} ${endY - EVENT_R}`,
+    tasks: rows.map((c) => ({
+      rect: { x: axis - w / 2, y: top(c), w, h },
+      verb: { x: axis, y: c + 6 },
+      glyph: { x: axis - w / 2 + 11, y: top(c) + 9 },
+      assoc: `M${axis + w / 2} ${c} H${dataX}`,
+      data: { x: dataX, y: c - DATA_H / 2 },
+      dataLabel: { x: dataX + DATA_W / 2, y: c + DATA_H / 2 + 16, anchor: "middle" }
+    }))
+  };
+})();
+
+const layouts = [wide, narrow];
+---
+
+<figure class="bpmn" data-process data-reveal>
+  <figcaption class="bpmn__head">
+    <span class="label">{content.chartLabel}</span>
+    <span class="bpmn__hint"><i aria-hidden="true"></i>{content.chartHint}</span>
+  </figcaption>
+
+  {layouts.map((model) => (
+    <svg
+      class:list={["bpmn__diagram", `bpmn__diagram--${model.key}`]}
+      viewBox={model.viewBox}
+      aria-hidden="true"
+    >
+      <defs>
+        <marker
+          id={`bpmn-arrow-${model.key}`}
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path class="bpmn__arrow" d="M0 1 L9 5 L0 9 z" />
+        </marker>
+      </defs>
+
+      {model.flows.map((d) => (
+        <path class="bpmn__flow" d={d} marker-end={`url(#bpmn-arrow-${model.key})`} />
+      ))}
+      <path class="bpmn__flow" d={model.loop} marker-end={`url(#bpmn-arrow-${model.key})`} />
+      <text
+        class="bpmn__meta"
+        x={model.loopLabel.x}
+        y={model.loopLabel.y}
+        text-anchor={model.loopLabel.anchor}
+        transform={
+          model.loopLabel.rotate
+            ? `rotate(${model.loopLabel.rotate} ${model.loopLabel.x} ${model.loopLabel.y})`
+            : undefined
+        }
+      >
+        {content.chartLoop}
+      </text>
+
+      <circle
+        class="bpmn__event"
+        cx={model.start.at.x}
+        cy={model.start.at.y}
+        r={EVENT_R}
+        style={`--delay:${ACTIVE.start}s`}
+      />
+      <text
+        class="bpmn__meta"
+        x={model.start.label.x}
+        y={model.start.label.y}
+        text-anchor={model.start.label.anchor}
+      >
+        {content.chartStart}
+      </text>
+
+      {model.tasks.map((task, index) => (
+        <g style={`--delay:${ACTIVE.tasks[index]}s`}>
+          <path class="bpmn__assoc" d={task.assoc} />
+          <path class="bpmn__data" d={page(task.data).body} />
+          <path class="bpmn__fold" d={page(task.data).corner} />
+          <text
+            class="bpmn__meta"
+            x={task.dataLabel.x}
+            y={task.dataLabel.y}
+            text-anchor={task.dataLabel.anchor}
+          >
+            {content.chartArtifacts[index]}
+          </text>
+
+          <rect
+            class="bpmn__task"
+            x={task.rect.x}
+            y={task.rect.y}
+            width={task.rect.w}
+            height={task.rect.h}
+            rx="8"
+          />
+          <g class="bpmn__glyph" transform={`translate(${task.glyph.x} ${task.glyph.y})`}>
+            <circle cx="6" cy="4.5" r="3" />
+            <path d="M1 13c0-3 2.2-4.8 5-4.8s5 1.8 5 4.8" />
+          </g>
+          <text class="bpmn__verb" x={task.verb.x} y={task.verb.y} text-anchor="middle">
+            {content.methods[index].verb}
+          </text>
+        </g>
+      ))}
+
+      <g style={`--delay:${ACTIVE.gateway}s`}>
+        <path class="bpmn__gateway" d={diamond(model.gateway.at)} />
+        <path class="bpmn__gateway-mark" d={cross(model.gateway.at)} />
+      </g>
+      <text
+        class="bpmn__meta"
+        x={model.gateway.label.x}
+        y={model.gateway.label.y}
+        text-anchor={model.gateway.label.anchor}
+      >
+        {content.chartGateway}
+      </text>
+
+      <circle
+        class="bpmn__event bpmn__event--end"
+        cx={model.end.at.x}
+        cy={model.end.at.y}
+        r={EVENT_R}
+        style={`--delay:${ACTIVE.end}s`}
+      />
+      <text
+        class="bpmn__meta"
+        x={model.end.label.x}
+        y={model.end.label.y}
+        text-anchor={model.end.label.anchor}
+      >
+        {content.chartEnd}
+      </text>
+
+      <circle class="bpmn__token" r="7" style={`offset-path: path('${model.token}')`} />
+    </svg>
+  ))}
+
+  <ol class="bpmn__stations" role="list">
+    {content.methods.map((method) => (
+      <li class="bpmn__station">
+        <h3>{method.verb}</h3>
+        <p>{method.body}</p>
+      </li>
+    ))}
+  </ol>
+</figure>

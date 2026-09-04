@@ -61,8 +61,13 @@ export interface SiteContent {
   approach: {
     title: string;
     intro: string;
-    flowLabel: string;
-    flowHint: string;
+    chartLabel: string;
+    chartHint: string;
+    chartStart: string;
+    chartEnd: string;
+    chartGateway: string;
+    chartLoop: string;
+    chartArtifacts: string[];
     methods: Array<{
       verb: string;
       body: string;
@@ -200,8 +205,13 @@ export const siteContent: Record<Locale, SiteContent> = {
     approach: {
       title: "A practical way through complexity.",
       intro: "The method changes with the problem. The discipline stays consistent.",
-      flowLabel: "How the work moves",
-      flowHint: "scattered input, settled decision",
+      chartLabel: "The method as a model",
+      chartHint: "start, four tasks, one gateway, one decision",
+      chartStart: "request",
+      chartEnd: "decision",
+      chartGateway: "clear enough?",
+      chartLoop: "no \u2014 back to the need",
+      chartArtifacts: ["needs", "model", "backlog", "standards"],
       methods: [
         {
           verb: "Listen",
@@ -376,8 +386,13 @@ export const siteContent: Record<Locale, SiteContent> = {
     approach: {
       title: "Ein praktischer Weg durch Komplexität.",
       intro: "Die Methode ändert sich mit dem Problem. Die Disziplin bleibt.",
-      flowLabel: "Wie die Arbeit verläuft",
-      flowHint: "verstreuter Input, klare Entscheidung",
+      chartLabel: "Die Methode als Modell",
+      chartHint: "Start, vier Aufgaben, ein Gateway, eine Entscheidung",
+      chartStart: "Anfrage",
+      chartEnd: "Entscheidung",
+      chartGateway: "klar genug?",
+      chartLoop: "nein \u2014 zurück zum Bedarf",
+      chartArtifacts: ["Bedarf", "Modell", "Backlog", "Standards"],
       methods: [
         {
           verb: "Zuhören",
