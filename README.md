@@ -39,17 +39,17 @@ diagram included.
 
 ## Theme
 
-Light and dark are both hand-tuned; the header carries a three-way switch
-(light / dark / system). "System" is the default and simply follows
-`prefers-color-scheme`, so the site is themed correctly with JavaScript
-disabled. An explicit choice is stored in `localStorage` under `theme` and
-applied by a small inline script in `<head>`, before first paint, so a chosen
-theme never flashes the other one on load.
+Light and dark are both hand-tuned; the header carries a two-way switch.
+**Light is the default and the site does not follow `prefers-color-scheme`** —
+a visitor whose system is set to dark still gets the light page until they ask
+for dark. That is deliberate: following the system preference meant most
+visitors landed on the dark theme without ever choosing it.
 
-Dark values are defined once in `global.css` and applied twice — under the
-media query for system-dark visitors who have not chosen, and under
-`:root[data-theme="dark"]` for an explicit choice. Keep those two lists
-identical.
+Dark is therefore only ever an explicit choice. It is stored in `localStorage`
+under `theme`, defined once in `global.css` under `:root[data-theme="dark"]`,
+and applied by a small inline script in `<head>` before first paint so a chosen
+dark theme never flashes light on load. With JavaScript disabled the page is
+light.
 
 ## Motion
 
