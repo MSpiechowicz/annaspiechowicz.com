@@ -694,7 +694,7 @@ p {
   gap: 0.75rem 1.625rem;
   margin-top: 2.5rem;
   padding-top: 1.625rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
   list-style: none;
 }
 
@@ -1192,13 +1192,18 @@ p {
 .timeline__list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-rows: auto auto auto auto;
+  gap: 0.5rem 1rem;
   list-style: none;
 }
 
+/* Each entry spans the same four rows - marker, period, role, company - so
+   those sit on shared baselines without any column reserving blank space for
+   a wrap that may never happen. */
 .timeline__item {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
   gap: 0.5rem;
 }
 
@@ -1234,16 +1239,15 @@ p {
 }
 
 .timeline__role {
-  min-height: 2.5rem;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: -0.018em;
-  line-height: 1.32;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
 }
 
 .timeline__company {
   color: var(--ink-2);
-  font-size: var(--fs-sm);
+  font-size: 0.78125rem;
 }
 
 .timeline__detail {
@@ -1477,7 +1481,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-strong);
 }
 
 .legal-back {
@@ -1512,7 +1516,7 @@ p {
   grid-template-columns: minmax(11rem, 0.4fr) minmax(0, 1fr);
   gap: 0.75rem 2.5rem;
   padding-block: 1.75rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
 }
 
 .legal-content section h2 {
