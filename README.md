@@ -38,6 +38,20 @@ To restyle the site, change the custom properties in the `:root` block at the to
 `global.css`. Everything else reads from them — `--accent` alone re-themes the whole page,
 diagram included.
 
+## Theme
+
+Light and dark are both hand-tuned; the header carries a three-way switch
+(light / dark / system). "System" is the default and simply follows
+`prefers-color-scheme`, so the site is themed correctly with JavaScript
+disabled. An explicit choice is stored in `localStorage` under `theme` and
+applied by a small inline script in `<head>`, before first paint, so a chosen
+theme never flashes the other one on load.
+
+Dark values are defined once in `global.css` and applied twice — under the
+media query for system-dark visitors who have not chosen, and under
+`:root[data-theme="dark"]` for an explicit choice. Keep those two lists
+identical.
+
 ## Motion
 
 Every animation is CSS, gated behind an `IntersectionObserver` that adds `.is-visible`

@@ -63,8 +63,11 @@
   font-synthesis: none;
 }
 
+/* Dark tokens live in one place and are applied twice: once for visitors whose
+   system asks for dark and who have not chosen otherwise, and once for an
+   explicit choice from the theme switch. Keep the two lists identical. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #0b1017;
     --card: #121a26;
     --card-soft: #18222f;
@@ -94,6 +97,36 @@
     --on-accent: #08101d;
   }
 }
+
+:root[data-theme="dark"] {
+    --paper: #0b1017;
+    --card: #121a26;
+    --card-soft: #18222f;
+    --band: #1b2635;
+    --track: #243146;
+
+    --ink: #e9eef6;
+    --ink-2: #a6b3c6;
+    --ink-3: #8593a8;
+
+    --line: #212d3d;
+    --line-soft: #1a2430;
+    --line-strong: #33455e;
+    --hairline: #2a3749;
+    --route: #2f3f56;
+    --marker: #4a5b73;
+    --row-hover: #18222f;
+    --chip: #18222f;
+
+    /* shadows read as depth on paper and as noise on a dark ground */
+    --shadow: 0 0 0;
+    --shadow-a: 55%;
+    --shadow-b: 45%;
+
+    --accent: #6f96ff;
+    --accent-deep: #9ab6ff;
+    --on-accent: #08101d;
+  }
 
 /* =========================================================================
    Base
@@ -462,6 +495,38 @@ p {
   flex: none;
   border-radius: 50%;
   background: currentcolor;
+}
+
+.theme-switch {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.theme-switch button {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--ink-3);
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.theme-switch button:hover {
+  color: var(--ink);
+}
+
+.theme-switch button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.theme-switch svg {
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 .language-link {
@@ -1714,6 +1779,19 @@ p {
   .not-found__actions .button,
   .contact__actions .button {
     flex-grow: 1;
+  }
+
+  /* the theme switch needs the room the wordmark was using */
+  .brand-mark__name {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .board {

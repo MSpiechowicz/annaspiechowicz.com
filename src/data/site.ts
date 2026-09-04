@@ -17,6 +17,7 @@ export interface SiteContent {
     cv: string;
     menu: string;
     status: string;
+    theme: { label: string; light: string; dark: string; system: string };
   };
   hero: {
     eyebrow: string;
@@ -128,7 +129,8 @@ export const siteContent: Record<Locale, SiteContent> = {
       languageLabel: "Switch to German",
       cv: "CV \u00b7 EN",
       menu: "Menu",
-      status: "open to conversations"
+      status: "open to conversations",
+      theme: { label: "Theme", light: "Light", dark: "Dark", system: "System" }
     },
     hero: {
       eyebrow: "Product Owner with analyst precision",
@@ -341,7 +343,8 @@ export const siteContent: Record<Locale, SiteContent> = {
       languageLabel: "Zur englischen Version wechseln",
       cv: "CV \u00b7 DE",
       menu: "Men\u00fc",
-      status: "offen f\u00fcr Gespr\u00e4che"
+      status: "offen f\u00fcr Gespr\u00e4che",
+      theme: { label: "Design", light: "Hell", dark: "Dunkel", system: "System" }
     },
     hero: {
       eyebrow: "Product Owner mit analytischer Präzision",
