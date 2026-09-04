@@ -1154,37 +1154,164 @@ p {
    Approach
    ========================================================================= */
 
-.methods {
+.flow {
+  padding: 1.625rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 24px 60px -34px rgb(var(--shadow) / var(--shadow-a));
+}
+
+.flow__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.flow__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-mono-xs);
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+.flow__hint i {
+  position: relative;
+  top: 0.08em;
+  display: block;
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.flow__graphic {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.flow__graphic--narrow {
+  display: none;
+}
+
+.flow__guide {
+  stroke: var(--line);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+}
+
+.flow__dot {
+  opacity: var(--o);
+}
+
+/* the four verbs sit under the four stations the field passes through, so the
+   row reads as part of the graphic rather than as a second set of cards */
+.flow__steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.625rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid var(--line-soft);
   list-style: none;
 }
 
-.method {
+.flow__step {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1.5rem;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius);
-  background: var(--card);
 }
 
-.method__index {
-  color: var(--accent);
+.flow__tick {
+  display: block;
+  overflow: hidden;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--track);
 }
 
-.method h3 {
+.flow__tick i {
+  display: block;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.flow__step:nth-child(2) .flow__tick i {
+  background: color-mix(in oklab, var(--accent) 78%, var(--card));
+}
+
+.flow__step:nth-child(3) .flow__tick i {
+  background: color-mix(in oklab, var(--accent) 56%, var(--card));
+}
+
+.flow__step:nth-child(4) .flow__tick i {
+  background: color-mix(in oklab, var(--accent) 34%, var(--card));
+}
+
+.flow__step h3 {
   font-size: var(--fs-md);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-.method p {
+.flow__step p {
   color: var(--ink-2);
   font-size: var(--fs-sm);
-  line-height: 1.6;
+  line-height: 1.55;
+}
+
+/* the dots settle from their scatter, column by column */
+.js .flow__dot {
+  opacity: 0;
+  transform: translate(var(--dx), var(--dy));
+}
+
+.js .flow.is-visible .flow__dot {
+  opacity: var(--o);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .flow__dot {
+    transition:
+      opacity 620ms var(--ease-out),
+      transform 900ms var(--ease-out);
+    transition-delay: var(--delay);
+  }
+
+  .flow.is-visible .flow__tick i {
+    animation: segfill 900ms var(--ease-out) both;
+  }
+
+  .flow.is-visible .flow__step:nth-child(1) .flow__tick i {
+    animation-delay: 300ms;
+  }
+
+  .flow.is-visible .flow__step:nth-child(2) .flow__tick i {
+    animation-delay: 520ms;
+  }
+
+  .flow.is-visible .flow__step:nth-child(3) .flow__tick i {
+    animation-delay: 740ms;
+  }
+
+  .flow.is-visible .flow__step:nth-child(4) .flow__tick i {
+    animation-delay: 960ms;
+  }
+}
+
+.flow:not(.is-visible) .flow__tick i {
+  transform: scaleX(1);
 }
 
 /* =========================================================================
@@ -1542,19 +1669,16 @@ p {
 }
 
 .js .metrics > :nth-child(2),
-.js .credentials > :nth-child(2),
-.js .methods > :nth-child(2) {
+.js .credentials > :nth-child(2) {
   transition-delay: 80ms;
 }
 
 .js .metrics > :nth-child(3),
-.js .credentials > :nth-child(3),
-.js .methods > :nth-child(3) {
+.js .credentials > :nth-child(3) {
   transition-delay: 160ms;
 }
 
-.js .metrics > :nth-child(4),
-.js .methods > :nth-child(4) {
+.js .metrics > :nth-child(4) {
   transition-delay: 240ms;
 }
 
@@ -1582,8 +1706,9 @@ p {
     gap: 1.25rem;
   }
 
-  .methods {
+  .flow__steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
@@ -1668,8 +1793,26 @@ p {
   }
 
   .metrics,
-  .methods {
+  .flow__steps {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow {
+    padding: 1.125rem;
+  }
+
+  .flow__head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .flow__graphic--wide {
+    display: none;
+  }
+
+  .flow__graphic--narrow {
+    display: block;
   }
 
   .hero__actions .button,
@@ -1753,8 +1896,14 @@ p {
   }
 
   .board__led,
-  .board__phases i::before {
+  .board__phases i::before,
+  .flow__tick i {
     transform: scaleX(1);
+  }
+
+  .js .flow__dot {
+    opacity: var(--o);
+    transform: none;
   }
 
   .board__dot {

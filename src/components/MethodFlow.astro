@@ -1,0 +1,124 @@
+---
+import type { SiteContent } from "../data/site";
+
+interface Props {
+  content: SiteContent["approach"];
+}
+
+const { content } = Astro.props;
+
+/*
+  A field of dots, each with a resting place and a scattered start. The resting
+  places fan out across the full height at the open end and close onto the
+  centre line at the far end, so the field carries the argument by itself: the
+  same material, ordered. On reveal every dot travels from its scatter to its
+  rest, column by column.
+
+  The scatter is a hash of the dot's own coordinates rather than Math.random,
+  so the field is identical on every build and never shifts between the
+  server-rendered markup and what the browser paints.
+
+  Two fields are drawn. A 1000 x 240 band reads well across a wide column; on a
+  phone that band would collapse to a 70px sliver, so a squarer 420 x 300 field
+  with fewer dots takes over. Only one is ever displayed.
+*/
+const CLOSED = 0.03; /* what is left of the fan at the closed end */
+
+const hash = (a: number, b: number) => {
+  const n = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453;
+  return (n - Math.floor(n)) * 2 - 1; /* -1 .. 1, stable */
+};
+
+/* a gentle power curve rather than an ease: the fan narrows the whole way
+   across instead of collapsing in the middle and then running flat */
+const close = (t: number) => t ** 1.4;
+const round = (value: number, places = 1) => Number(value.toFixed(places));
+
+interface Field {
+  width: number;
+  height: number;
+  cols: number;
+  rows: number;
+  inset: number;
+  spread: number;
+  step: number;
+}
+
+const field = ({ width, height, cols, rows, inset, spread, step }: Field) =>
+  Array.from({ length: cols }, (_, col) => {
+    const t = col / (cols - 1);
+    const closing = 1 - (1 - CLOSED) * close(t);
+    const drift = 1 - t; /* the jitter dies away as the fan closes */
+
+    return Array.from({ length: rows }, (_, row) => {
+      const offset = (row / (rows - 1)) * 2 - 1; /* -1 .. 1 */
+
+      return {
+        /* where it comes to rest */
+        x: round(inset + t * (width - inset * 2) + hash(col, row) * 7 * drift),
+        y: round(height / 2 + offset * spread * closing + hash(row, col) * 16 * drift),
+        r: round(2 + t * 1.4, 2),
+        opacity: round(0.42 + t * 0.58, 2),
+        mix: Math.round(10 + t * 90),
+        /* where it starts, and when it sets off */
+        dx: round(hash(col + 7, row * 3) * 36),
+        dy: round(hash(row + 5, col * 3) * 80),
+        delay: 60 + col * step
+      };
+    });
+  }).flat();
+
+const WIDE = { width: 1000, height: 240, cols: 22, rows: 7, inset: 26, spread: 94, step: 26 };
+const NARROW = { width: 420, height: 300, cols: 13, rows: 6, inset: 22, spread: 118, step: 42 };
+
+const wide = field(WIDE);
+const narrow = field(NARROW);
+
+/* a short tick under each of the four stations, tying the wide field to the
+   verbs below it without ruling the graphic into boxes */
+const guides = [0, 1, 2, 3].map((index) => round((WIDE.width * (index + 0.5)) / 4));
+
+const dotStyle = (dot: (typeof wide)[number]) =>
+  `--o:${dot.opacity};--dx:${dot.dx}px;--dy:${dot.dy}px;--delay:${dot.delay}ms;` +
+  `fill:color-mix(in oklab, var(--accent) ${dot.mix}%, var(--marker))`;
+---
+
+<figure class="flow" data-flow data-reveal>
+  <figcaption class="flow__head">
+    <span class="label">{content.flowLabel}</span>
+    <span class="flow__hint"><i aria-hidden="true"></i>{content.flowHint}</span>
+  </figcaption>
+
+  <svg
+    class="flow__graphic flow__graphic--wide"
+    viewBox={`0 0 ${WIDE.width} ${WIDE.height}`}
+    aria-hidden="true"
+  >
+    {guides.map((x) => (
+      <line class="flow__guide" x1={x} y1={WIDE.height - 18} x2={x} y2={WIDE.height - 2} />
+    ))}
+    {wide.map((dot) => (
+      <circle class="flow__dot" cx={dot.x} cy={dot.y} r={dot.r} style={dotStyle(dot)} />
+    ))}
+  </svg>
+
+  <svg
+    class="flow__graphic flow__graphic--narrow"
+    viewBox={`0 0 ${NARROW.width} ${NARROW.height}`}
+    aria-hidden="true"
+  >
+    {narrow.map((dot) => (
+      <circle class="flow__dot" cx={dot.x} cy={dot.y} r={dot.r} style={dotStyle(dot)} />
+    ))}
+  </svg>
+
+  <ol class="flow__steps" role="list">
+    {content.methods.map((method) => (
+      <li class="flow__step">
+        <span class="flow__tick" aria-hidden="true"><i></i></span>
+        <h3>{method.verb}</h3>
+        <p>{method.body}</p>
+      </li>
+    ))}
+  </ol>
+</figure>
