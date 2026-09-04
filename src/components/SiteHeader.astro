@@ -22,7 +22,7 @@ const links = [
     <div class="header-left">
       <a class="brand-mark" href={locale === "en" ? "/" : "/de/"}>
         <b aria-hidden="true">AS</b>
-        Anna Spiechowicz
+        <span class="brand-mark__name">Anna Spiechowicz</span>
       </a>
       <nav class="primary-nav" aria-label={locale === "de" ? "Hauptnavigation" : "Primary navigation"}>
         {links.map((link) => <a href={link.href}>{link.label}</a>)}
@@ -31,6 +31,17 @@ const links = [
 
     <div class="header-actions">
       <p class="status-chip"><i aria-hidden="true"></i>{content.navigation.status}</p>
+      <div class="theme-switch" role="group" aria-label={content.navigation.theme.label} data-theme-switch>
+        <button type="button" data-theme-value="light" aria-pressed="false" aria-label={content.navigation.theme.light} title={content.navigation.theme.light}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        </button>
+        <button type="button" data-theme-value="dark" aria-pressed="false" aria-label={content.navigation.theme.dark} title={content.navigation.theme.dark}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
+        </button>
+        <button type="button" data-theme-value="system" aria-pressed="false" aria-label={content.navigation.theme.system} title={content.navigation.theme.system}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg>
+        </button>
+      </div>
       <a class="language-link" href={alternatePath(locale)} aria-label={content.navigation.languageLabel}>
         <span class:list={{ active: locale === "en" }}>EN</span>
         <span aria-hidden="true">/</span>
@@ -65,12 +76,65 @@ const links = [
     ))}
     <a href={cvUrl} download>
       {content.navigation.cv}
-      <span aria-hidden="true">↓</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"></path><path d="M6 13l6 6 6-6"></path></svg>
     </a>
   </nav>
 </header>
 
 <script>
+  /* the stored choice is applied before paint by the inline script in the head;
+     this only wires the buttons and reflects the current state */
+  const KEY = "theme";
+  const switcher = document.querySelector<HTMLElement>("[data-theme-switch]");
+
+  const readTheme = () => {
+    try {
+      const v = localStorage.getItem(KEY);
+      return v === "light" || v === "dark" ? v : "system";
+    } catch {
+      return "system";
+    }
+  };
+
+  const paint = (value: string) => {
+    switcher?.querySelectorAll<HTMLButtonElement>("[data-theme-value]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.themeValue === value));
+    });
+  };
+
+  if (switcher) {
+    paint(readTheme());
+
+    switcher.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-theme-value]");
+      if (!button) return;
+      const value = button.dataset.themeValue ?? "system";
+
+      if (value === "system") {
+        document.documentElement.removeAttribute("data-theme");
+      } else {
+        document.documentElement.setAttribute("data-theme", value);
+      }
+
+      const existing = document.getElementById("theme-color-choice");
+      if (value === "system") {
+        existing?.remove();
+      } else {
+        const meta = existing ?? document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color", id: "theme-color-choice" }));
+        meta.setAttribute("content", value === "dark" ? "#0b1017" : "#ffffff");
+      }
+
+      try {
+        if (value === "system") localStorage.removeItem(KEY);
+        else localStorage.setItem(KEY, value);
+      } catch {
+        /* private mode: the choice simply does not outlive the tab */
+      }
+
+      paint(value);
+    });
+  }
+
   const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
   const panel = document.querySelector<HTMLElement>("#mobile-nav");
 
