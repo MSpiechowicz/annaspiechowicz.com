@@ -19,7 +19,7 @@ const { content } = Astro.props;
   a model this shape is drawn for a narrow page anyway. Only one is displayed.
 
   Both layouts place their waypoints at the same fractions of the token's path
-  (9.6 / 36.5 / 50 / 63.5 / 90.4 per cent), so a single `bpmn-token` timeline in
+  (14.4 / 38.2 / 50 / 61.8 / 85.6 per cent), so a single `bpmn-token` timeline in
   global.css drives either one and every element highlight is that timeline
   delayed to the moment the token arrives. The vertical layout is symmetric
   about the gateway for exactly that reason. ACTIVE below is the other half of
@@ -55,11 +55,16 @@ const diamond = ({ x, y }: Point) =>
 const cross = ({ x, y }: Point) => `M${x - 8} ${y - 8} l16 16 M${x + 8} ${y - 8} l-16 16`;
 
 const wide = (() => {
-  const w = 146;
+  /* narrow enough that the gutter outside the first and last task can hold an
+     event caption, wide enough for the longest German verb */
+  const w = 132;
   const h = 72;
   const top = 70;
   const mid = 106;
-  const cols = [125, 375, 625, 875];
+  /* GUTTER of empty model on each side gives the events and their captions room
+     to stand clear of the first and last task; .bpmn__stations is padded by the
+     same 6% so the copy still sits under the task it belongs to */
+  const cols = [170, 390, 610, 830];
   const gate = { x: 500, y: mid };
   const startX = 24;
   const endX = 976;
@@ -69,12 +74,16 @@ const wide = (() => {
 
   return {
     key: "wide",
-    viewBox: "0 0 1000 276",
-    start: { at: { x: startX, y: mid }, label: { x: startX - 16, y: mid + 62, anchor: "start" } },
-    end: { at: { x: endX, y: mid }, label: { x: endX + 16, y: mid + 62, anchor: "end" } },
+    viewBox: "0 0 1000 264",
+    /* the captions share one line just below the task row, under the element
+       each names. The outer two are anchored to the canvas edge rather than
+       centred on their event, so a longer translation grows inwards into the
+       gutter instead of off the edge */
+    start: { at: { x: startX, y: mid }, label: { x: 2, y: mid + 44, anchor: "start" } },
+    end: { at: { x: endX, y: mid }, label: { x: 998, y: mid + 44, anchor: "end" } },
     gateway: {
       at: gate,
-      label: { x: gate.x, y: mid + 62, anchor: "middle" }
+      label: { x: gate.x, y: mid + 44, anchor: "middle" }
     },
     loop: `M${gate.x} ${mid - GATE} V24 H${cols[0]} V${top}`,
     loopLabel: { x: (gate.x + cols[0]) / 2, y: 16, anchor: "middle", rotate: 0 },
@@ -100,10 +109,10 @@ const wide = (() => {
 
 const narrow = (() => {
   const w = 150;
-  const h = 56;
+  const h = 44;
   const axis = 130;
   /* symmetric about the gateway, so the token fractions match the wide layout */
-  const rows = [91, 227, 363, 499];
+  const rows = [115, 235, 355, 475];
   const gate = { x: axis, y: 295 };
   const startY = 30;
   const endY = 560;
@@ -114,7 +123,7 @@ const narrow = (() => {
 
   return {
     key: "narrow",
-    viewBox: "0 0 340 600",
+    viewBox: "0 0 340 580",
     start: { at: { x: axis, y: startY }, label: { x: axis + 20, y: startY + 4, anchor: "start" } },
     end: { at: { x: axis, y: endY }, label: { x: axis + 20, y: endY + 4, anchor: "start" } },
     gateway: {

@@ -210,7 +210,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       chartStart: "request",
       chartEnd: "decision",
       chartGateway: "clear enough?",
-      chartLoop: "no \u2014 back to the need",
+      chartLoop: "no \u2014 back to Listen",
       chartArtifacts: ["needs", "model", "backlog", "standards"],
       methods: [
         {
@@ -391,7 +391,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       chartStart: "Anfrage",
       chartEnd: "Entscheidung",
       chartGateway: "klar genug?",
-      chartLoop: "nein \u2014 zurück zum Bedarf",
+      chartLoop: "nein \u2014 zurück zu Zuhören",
       chartArtifacts: ["Bedarf", "Modell", "Backlog", "Standards"],
       methods: [
         {
