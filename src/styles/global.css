@@ -456,19 +456,21 @@ p {
 .status-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  min-height: 2rem;
   padding: 0.375rem 0.75rem;
   border: 1px solid var(--accent-line);
   border-radius: 999px;
   background: var(--accent-tint);
   font-size: var(--fs-mono-xs);
   font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
   color: var(--accent);
 }
 
 .status-chip i {
-  position: relative;
-  top: 0.08em;
   display: block;
   width: 6px;
   height: 6px;
