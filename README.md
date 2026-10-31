@@ -8,7 +8,7 @@ diagrams, and small browser scripts for navigation, theme switching and motion.
 
 ## Development
 
-Use Node.js 22.x, as specified in `.nvmrc` and `package.json`.
+Use Node.js 26.x, as specified in `.nvmrc` and `package.json`.
 
 ```sh
 npm install
@@ -143,7 +143,7 @@ still run when reduced motion is not requested.
 - Anna reviews and approves the English and German copy.
 - Anna or a qualified adviser reviews the Impressum and privacy notice.
 - The Vercel project uses `npm run build`, publishes `dist`, and installs with npm
-  (`npm ci`), not yarn. Node is pinned to 22.x by `engines` and `.nvmrc`.
+  (`npm ci`), not yarn. Node is pinned to 26.x by `engines` and `.nvmrc`.
 - The custom domain points to the approved production deployment.
 
 ## License
